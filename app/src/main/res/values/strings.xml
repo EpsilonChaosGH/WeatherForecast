@@ -1,3 +1,83 @@
 <resources>
+    <!--  App  -->
     <string name="app_name">WeatherForecast</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="button_open_settings">Open Settings</string>
+
+    <!--  App errors and server response status code  -->
+    <string name="error_401_invalid_api_key">Invalid API key</string>
+    <string name="error_404_city_not_found">City not found</string>
+    <string name="error_429_request_rate_limit_surpassing">Api request rate limit surpassing for application</string>
+    <string name="error_connection">Mobile network not available</string>
+    <string name="error_gps_not_found">GPS not found</string>
+    <string name="error_internal">Internal error! Please try again later.</string>
+    <string name="error_field_is_empty">Field is empty</string>
+
+    <!--  App permissions  -->
+    <string name="permission_grated">Permission grated</string>
+    <string name="permissions_denied">Permissions denied</string>
+    <string name="permissions_denied_forever">Unable to search weather by GPS. Go to
+        Settings > Permissions, then allow the location permissions, and try again:</string>
+
+    <!-- Air quality -->
+    <string name="good">Good</string>
+    <string name="fair">Fair</string>
+    <string name="moderate">Moderate</string>
+    <string name="poor">Poor</string>
+    <string name="very_poor">Very poor</string>
+    <string name="error">Error</string>
+
+    <!-- Weather icons -->
+    <string name="clear_sky">01d</string>
+    <string name="few_clouds">02d</string>
+    <string name="scattered_clouds">03d</string>
+    <string name="broken_clouds">04d</string>
+    <string name="shower_rain">09d</string>
+    <string name="rain">10d</string>
+    <string name="thunderstorm">11d</string>
+    <string name="snow">13d</string>
+    <string name="mist">50d</string>
+
+    <!-- Weather night icons -->
+    <string name="clear_sky_night">01n</string>
+    <string name="few_clouds_night">02n</string>
+    <string name="scattered_clouds_night">03n</string>
+    <string name="broken_clouds_night">04n</string>
+    <string name="shower_rain_night">09n</string>
+    <string name="rain_night">10n</string>
+    <string name="thunderstorm_night">11n</string>
+    <string name="snow_night">13n</string>
+    <string name="mist_night">50n</string>
+
+    <string name="unknown">unknown</string>
+
+    <!-- UI -->
+    <string name="hint_search_by_city">Search by city</string>
+
+    <string name="test_weather_description">broken clouds</string>
+    <string name="test_date">Tue, 8 December 15:00</string>
+    <string name="test_c">°C</string>
+    <string name="test_temperature">-17</string>
+    <string name="test_temperature_new">-17°C</string>
+    <string name="test_city">Moscow</string>
+    <string name="test_time">Sun, 21:00</string>
+    <string name="test_country">RU</string>
+    <string name="test_humidity">77%</string>
+    <string name="test_pressure">1001</string>
+    <string name="test_wind_speed">2.9</string>
+    <string name="test_air_quality">Good</string>
+    <string name="test_air_concentration">55 μg/m3</string>
+
+    <string name="title_feels_like">Feels like</string>
+    <string name="title_humidity">Humidity</string>
+    <string name="title_pressure">Pressure</string>
+    <string name="title_wind_speed">Wind speed</string>
+    <string name="title_no2">NO2:</string>
+    <string name="title_pm25">PM25:</string>
+    <string name="title_pm10">PM10:</string>
+    <string name="title_o3">O3:</string>
+    <string name="menu_weather">Weather</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="favorites_list_is_empty">Favorites list is empty</string>
 </resources>

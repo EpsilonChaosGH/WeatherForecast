@@ -8,7 +8,7 @@ object Other {
 
     /**
      * [Core Kotlin Extensions](https://developer.android.com/kotlin/ktx#core)
-     * Kotlin extensions for 'core' artifact
+     * Kotlin extensions for 'core' artifact.
      */
     const val ktxCore = "androidx.core:core-ktx:${Versions.ktxCore}"
 
@@ -51,5 +51,20 @@ object Other {
     const val navigationFragment =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}"
     const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navVersion}"
+
+    /**
+     * [Swipe refresh](https://developer.android.com/develop/ui/views/touch-and-input/swipe/add-swipe-interface)
+     */
+    const val swipeRefresh =
+        "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefresh}"
+
+    /**
+     * [View Binding Property Delegate](https://github.com/androidbroadcast/ViewBindingPropertyDelegate)
+     * Make work with Android View Binding simpler.
+     */
+    const val viewBindingPropDel =
+        "com.github.kirich1409:viewbindingpropertydelegate:${Versions.viewBindingPropDel}"
+    const val viewBindingPropDelNoRef =
+        "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingPropDelNoRef}"
 
 }
