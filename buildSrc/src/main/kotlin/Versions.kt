@@ -16,4 +16,7 @@ object Versions {
     const val coroutines = "1.7.1"
     const val material = "1.9.0"
     const val navVersion = "2.5.3"
+    const val swipeRefresh = "1.1.0"
+    const val viewBindingPropDel = "1.4.4"
+    const val viewBindingPropDelNoRef = "1.4.6"
 }

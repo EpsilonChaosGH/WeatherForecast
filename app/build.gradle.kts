@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -47,6 +50,9 @@ dependencies {
         implementation(navigationFragment)
         implementation(navigationUi)
         implementation(coroutines)
+        implementation(swipeRefresh)
+        implementation(viewBindingPropDel)
+        implementation(viewBindingPropDelNoRef)
     }
 
     dep.test.apply {
