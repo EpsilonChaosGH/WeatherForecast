@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:background="@drawable/layout_bg_weather"
     android:layout_marginEnd="@dimen/medium_space"
-    android:padding="@dimen/low_space">
+    android:padding="@dimen/low_space"
+    tools:background="@drawable/layout_bg_weather">
 
     <ImageView
         android:id="@+id/imageView"
@@ -34,6 +34,5 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

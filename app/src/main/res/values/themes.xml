@@ -1,43 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.WeatherForecast" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
-
-    <style name="Theme.WeatherForecast" parent="Base.Theme.WeatherForecast">
-
+    <style name="Theme.WeatherForecast" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/black</item>
         <item name="textInputStyle">@style/GlobalTextInputStyle</item>
         <item name="android:textViewStyle">@style/GlobalTextViewStyle</item>
     </style>
 
-    <style name="SplashActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
+    <style name="WeatherForecastTabs" parent="Widget.Design.BottomNavigationView" />
 
-    <style name="GlobalTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:minWidth">@dimen/big_width</item>
-    </style>
-
+    <style name="GlobalTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
     <style name="GlobalTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/white</item>
     </style>
 
-<!--    -->
     <style name="WeatherIconImageView">
         <item name="android:layout_width">46dp</item>
         <item name="android:layout_height">46dp</item>
     </style>
-<!---->
+
     <style name="TitleTextView">
         <item name="android:textSize">28sp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-<!---->
+
     <style name="WeatherDetailsTextView">
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center</item>
@@ -45,19 +33,19 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-<!---->
+
     <style name="HintTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">12sp</item>
     </style>
-<!---->
+
     <style name="HintTextView.Weather">
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:layout_marginTop">@dimen/low_space</item>
     </style>
 
-    <style name="HintTextView.Air"></style>
+    <style name="HintTextView.Air" />
 
     <style name="ValueTextView">
         <item name="android:textColor">@color/main_text_color</item>
@@ -68,7 +56,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
     </style>
-<!---->
+
     <style name="ValueTextView.Weather">
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginTop">@dimen/low_space</item>
@@ -85,7 +73,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:text">@string/test_air_quality</item>
     </style>
-<!---->
+
     <style name="Layout">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -97,7 +85,6 @@
         <item name="android:layout_marginEnd">@dimen/low_space</item>
     </style>
 
-<!--    -->
     <style name="WeatherLinear">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -105,5 +92,4 @@
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
     </style>
-
 </resources>
