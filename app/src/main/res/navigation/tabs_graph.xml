@@ -2,9 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabs_graph"
-    app:startDestination="@id/weather_graph">
+    app:startDestination="@id/main_weather_graph">
 
-    <include app:graph="@navigation/weather_graph" />
+    <include app:graph="@navigation/main_weather_graph" />
     <include app:graph="@navigation/favorites_graph" />
 
 </navigation>

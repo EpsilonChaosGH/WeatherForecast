@@ -9,4 +9,4 @@
     android:fitsSystemWindows="true"
     app:defaultNavHost="true"
     app:navGraph="@navigation/main_graph"
-    tools:context=".MainActivity"/>
+    tools:context=".ui.main.MainActivity"/>

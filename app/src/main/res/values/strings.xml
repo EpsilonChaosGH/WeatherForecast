@@ -28,7 +28,7 @@
     <string name="very_poor">Very poor</string>
     <string name="error">Error</string>
 
-    <!-- Weather icons -->
+    <!-- Weather.kt icons -->
     <string name="clear_sky">01d</string>
     <string name="few_clouds">02d</string>
     <string name="scattered_clouds">03d</string>
@@ -39,7 +39,7 @@
     <string name="snow">13d</string>
     <string name="mist">50d</string>
 
-    <!-- Weather night icons -->
+    <!-- Weather.kt night icons -->
     <string name="clear_sky_night">01n</string>
     <string name="few_clouds_night">02n</string>
     <string name="scattered_clouds_night">03n</string>
