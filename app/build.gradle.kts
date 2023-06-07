@@ -2,36 +2,48 @@ typealias and = com.example.internal.Android
 typealias dep = com.example.internal.Dependencies
 
 plugins {
+    id("dagger.hilt.android.plugin")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    kotlin("kapt")
 }
 
 android {
     namespace = "com.example.weatherforecast"
-    compileSdk = 33
+    compileSdk = and.compileSdk
 
     defaultConfig {
         applicationId = "com.example.weatherforecast"
-        minSdk = 24
-        targetSdk = 33
+        minSdk = and.minSdk
+        targetSdk = and.targetSdk
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+//        kapt {
+//            arguments {
+//                arg("room.schemaLocation", "$projectDir/schemas")
+//            }
+//        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     viewBinding {
         enable = true
@@ -40,17 +52,32 @@ android {
 
 dependencies {
 
-    dep.other.apply {// Miscellaneous required libraries
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.21")
+
+    implementation(project(path = ":domain"))
+    implementation(project(path = ":data"))
+
+
+    dep.hilt.apply { // https://dagger.dev/hilt/
+        implementation(hiltAndroid)
+        kapt(daggerHiltCompiler)
+        kaptAndroidTest(daggerHiltCompiler)
+    }
+
+    dep.androidX.apply {
         implementation(ktxCore)
         implementation(ktxActivity)
         implementation(ktxFragment)
         implementation(appcompat)
         implementation(constraintLayout)
-        implementation(material)
         implementation(navigationFragment)
         implementation(navigationUi)
-        implementation(coroutines)
         implementation(swipeRefresh)
+    }
+
+    dep.other.apply {// Miscellaneous required libraries
+        implementation(material)
+        implementation(coroutines)
         implementation(viewBindingPropDel)
         implementation(viewBindingPropDelNoRef)
     }

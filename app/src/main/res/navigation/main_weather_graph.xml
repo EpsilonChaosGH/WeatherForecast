@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/weather_graph"
+    android:id="@+id/main_weather_graph"
     android:label="Weather"
-    app:startDestination="@id/weatherFragment">
+    app:startDestination="@id/mainWeatherFragment">
     <fragment
-        android:id="@+id/weatherFragment"
-        android:name="com.example.weatherforecast.ui.weather.WeatherFragment"
+        android:id="@+id/mainWeatherFragment"
+        android:name="com.example.weatherforecast.ui.mainweather.MainWeatherFragment"
         android:label="Weather"
-        tools:layout="@layout/fragment_weather">
+        tools:layout="@layout/fragment_main_weather">
         <argument
             android:name="City"
             app:argType="string" />
