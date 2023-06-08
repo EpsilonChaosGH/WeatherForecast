@@ -8,7 +8,7 @@ import com.example.weatherforecast.models.WeatherType
 import kotlin.math.roundToInt
 
 
-fun WeatherEntity.toWeatherState(): WeatherState = WeatherState(
+internal fun WeatherEntity.toWeatherState(): WeatherState = WeatherState(
     id = id,
     city = city,
     country = country,

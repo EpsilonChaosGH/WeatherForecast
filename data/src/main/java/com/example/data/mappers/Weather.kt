@@ -4,7 +4,7 @@ import com.example.data.entity.WeatherResponse
 import com.example.domain.entity.WeatherEntity
 
 
-fun WeatherResponse.toWeatherEntity(): WeatherEntity = WeatherEntity(
+internal fun WeatherResponse.toWeatherEntity(): WeatherEntity = WeatherEntity(
     id = sys.id,
     city = name,
     country = sys.country,
