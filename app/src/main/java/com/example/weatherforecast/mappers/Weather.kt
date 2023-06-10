@@ -3,12 +3,12 @@ package com.example.weatherforecast.mappers
 import com.example.domain.entity.WeatherEntity
 import com.example.weatherforecast.FORMAT_EEE_HH_mm
 import com.example.weatherforecast.format
-import com.example.weatherforecast.models.WeatherState
-import com.example.weatherforecast.models.WeatherType
+import com.example.weatherforecast.entity.WeatherState
+import com.example.weatherforecast.entity.WeatherType
 import kotlin.math.roundToInt
 
 
-fun WeatherEntity.toWeatherState(): WeatherState = WeatherState(
+internal fun WeatherEntity.toWeatherState(): WeatherState = WeatherState(
     id = id,
     city = city,
     country = country,

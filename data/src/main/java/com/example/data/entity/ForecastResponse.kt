@@ -2,25 +2,32 @@ package com.example.data.entity
 
 import com.squareup.moshi.Json
 
-
-data class WeatherResponse(
-    val id: Long,
-    val coord: Coord,
-    val weather: List<Weather>,
-    val main: Main,
-    val wind: Wind,
-    val dt: Long,
-    val sys: Sys,
-    val timezone: Long,
-    val name: String,
+data class ForecastResponse(
+    val list: List<ListElement>,
+    val city: City
 ) {
 
-    data class Coord(
-        val lon: Double,
-        val lat: Double
+    data class City(
+        val id: Long,
+        val name: String,
+        val coord: Coord,
+        val country: String,
+        val timezone: Long,
     )
 
-    data class Main(
+    data class Coord(
+        val lat: Double,
+        val lon: Double
+    )
+
+    data class ListElement(
+        val dt: Long,
+        val main: MainClass,
+        val weather: List<Weather>,
+        val wind: Wind,
+    )
+
+    data class MainClass(
         @field:Json(name = "temp")
         val temp: Double,
 
@@ -32,10 +39,6 @@ data class WeatherResponse(
 
         @field:Json(name = "humidity")
         val humidity: Long,
-    )
-
-    data class Sys(
-        val country: String,
     )
 
     data class Weather(
