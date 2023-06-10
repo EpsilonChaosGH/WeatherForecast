@@ -1,36 +1,71 @@
 package com.example.weatherforecast.ui.mainweather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.ResponseResult
 import com.example.domain.entity.City
 import com.example.domain.entity.WeatherEntity
-import com.example.domain.weather.GetWeatherByCityUseCase
+import com.example.domain.weather.ListenMainWeatherUseCase
+import com.example.domain.weather.LoadMainWeatherByCityUseCase
+import com.example.weatherforecast.SideEffect
+import com.example.weatherforecast.entity.MainWeatherState
+import com.example.weatherforecast.mappers.toMainWeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val getWeatherByCityUseCase: GetWeatherByCityUseCase
+    private val loadMainWeatherByCityUseCase: LoadMainWeatherByCityUseCase,
+    private val listenMainWeatherUseCase: ListenMainWeatherUseCase
+
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ResponseResult<WeatherEntity>?>(null)
-    val state: StateFlow<ResponseResult<WeatherEntity>?> = _state.asStateFlow()
+    private val _showMessageResEvent = MutableStateFlow<SideEffect<String?>>(SideEffect(null))
+    val showErrorMessageResEvent = _showMessageResEvent.asStateFlow()
+
+    private val _state = MutableStateFlow<MainWeatherState?>(null)
+    val state: StateFlow<MainWeatherState?> = _state.asStateFlow()
 
     init {
-        getWeatherByCity(City("tver"))
+        listenMainWeather()
+        getWeatherByCity(City("nelidovo"))
+    }
+
+    private fun listenMainWeather() {
+
+        listenMainWeatherUseCase.listenMainWeather().onEach { mainWeather ->
+            mainWeather?.toMainWeatherState()?.let {
+                _state.value = it
+            }
+        }
+            .launchIn(viewModelScope)
     }
 
     fun getWeatherByCity(city: City) {
-        getWeatherByCityUseCase.getWeatherByCity(city)
-            .onEach {
-                _state.value = it
+
+
+        viewModelScope.launch {
+            try {
+                loadMainWeatherByCityUseCase.loadingMainWeatherByCity(city)
+            } catch (ex: Exception) {
+//                _showMessageResEvent.value = SideEffect(ex.message)
+                Log.e("aaa",ex.message.toString())
+                _showMessageResEvent.value = SideEffect("MMMMMMMMMMMMMMMM")
             }
-            .launchIn(viewModelScope)
+        }
+
+//        getWeatherByCityUseCase.getWeatherByCity(city)
+//            .onEach {
+//                _state.value = it
+//            }
+//            .launchIn(viewModelScope)
     }
 }

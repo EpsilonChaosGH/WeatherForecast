@@ -1,9 +1,10 @@
-package com.example.data.entity
+package com.example.data.dbentity
 
 import androidx.room.ColumnInfo
 
 
 data class WeatherDbEntity(
+    @ColumnInfo(name = "city") val city: String,
     @ColumnInfo(name = "country") val country: String,
     @ColumnInfo(name = "temperature") val temperature: Double,
     @ColumnInfo(name = "icon") val icon: String,

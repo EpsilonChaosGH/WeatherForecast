@@ -6,6 +6,7 @@ import com.example.domain.ResponseResult
 import com.example.domain.entity.City
 import com.example.domain.entity.Coordinates
 import com.example.domain.entity.ForecastEntity
+import com.example.domain.executeWithResponse
 import com.example.domain.forecast.ForecastRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,30 +15,22 @@ import javax.inject.Inject
 class ForecastRepositoryImpl @Inject constructor(
     private val forecastService: ForecastService
 ) : ForecastRepository {
-    override fun loadingForecastByCity(city: City) = flow {
-        try {
-            forecastService.getForecastByCity(city.city).body()?.toForecastList()?.let { entity ->
-                emit(ResponseResult.Success(entity))
-            } ?: run {
-                throw NotFoundException()
-            }
-        } catch (ex: Exception) {
-            emit(ResponseResult.Error(ex))
+    override suspend fun loadingForecastByCity(city: City): ResponseResult<List<ForecastEntity>> {
+        return executeWithResponse {
+            forecastService.getForecastByCity(city.city).body()
+                ?.toForecastList()
+                ?: throw NotFoundException()
         }
     }
 
-    override fun loadingForecastByCoordinates(coordinates: Coordinates) = flow {
-        try {
+    override suspend fun loadingForecastByCoordinates(coordinates: Coordinates): ResponseResult<List<ForecastEntity>> {
+        return executeWithResponse {
             forecastService.getForecastByCoordinate(
                 lat = coordinates.lat,
                 lon = coordinates.lon
-            ).body()?.toForecastList()?.let { entity ->
-                emit(ResponseResult.Success(entity))
-            } ?: run {
-                throw NotFoundException()
-            }
-        } catch (ex: Exception) {
-            emit(ResponseResult.Error(ex))
+            ).body()
+                ?.toForecastList()
+                ?: throw NotFoundException()
         }
     }
 }

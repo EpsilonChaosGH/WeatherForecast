@@ -1,4 +1,4 @@
-package com.example.weatherforecast.models
+package com.example.weatherforecast.entity
 
 
 data class WeatherState(

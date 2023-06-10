@@ -1,6 +1,7 @@
-package com.example.weatherforecast.models
+package com.example.domain
 
-import com.example.domain.ResponseResult
+import java.lang.IllegalStateException
+
 
 val ResponseResult<*>?.isSucceeded get() = this != null && this is ResponseResult.Success && data != null
 
@@ -11,6 +12,13 @@ inline infix fun <T, Value : Any> ResponseResult<T>?.runSucceeded(predicate: (da
         return predicate.invoke(this.data)
     }
     return null
+}
+
+fun <T> ResponseResult<T>?.getResult(): T {
+    if (this != null && this.isSucceeded && this is ResponseResult.Success && this.data != null) {
+        return this.data
+    }
+    throw (this as ResponseResult.Error).exception
 }
 
 inline infix fun <T> ResponseResult<T>.success(predicate: (data: T) -> Unit): ResponseResult<T> {

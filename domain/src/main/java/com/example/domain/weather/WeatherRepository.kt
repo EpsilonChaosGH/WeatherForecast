@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
 
-    fun loadingWeatherByCity(city: City): Flow<ResponseResult<WeatherEntity>>
+    suspend fun loadingWeatherByCity(city: City): ResponseResult<WeatherEntity>
 
-    fun loadingWeatherByCoordinates(coordinates: Coordinates): Flow<ResponseResult<WeatherEntity>>
+    suspend fun loadingWeatherByCoordinates(coordinates: Coordinates): ResponseResult<WeatherEntity>
 }

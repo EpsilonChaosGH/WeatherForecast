@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface ForecastRepository {
 
-    fun loadingForecastByCity(city: City): Flow<ResponseResult<List<ForecastEntity>>>
+    suspend fun loadingForecastByCity(city: City): ResponseResult<List<ForecastEntity>>
 
-    fun loadingForecastByCoordinates(coordinates: Coordinates): Flow<ResponseResult<List<ForecastEntity>>>
+    suspend fun loadingForecastByCoordinates(coordinates: Coordinates): ResponseResult<List<ForecastEntity>>
 
 }

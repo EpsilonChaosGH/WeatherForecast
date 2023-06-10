@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 
 
 data class WeatherResponse(
+    val id: Long,
     val coord: Coord,
     val weather: List<Weather>,
     val main: Main,
@@ -34,7 +35,6 @@ data class WeatherResponse(
     )
 
     data class Sys(
-        val id: Long,
         val country: String,
     )
 

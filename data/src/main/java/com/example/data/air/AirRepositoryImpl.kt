@@ -8,6 +8,7 @@ import com.example.domain.air.AirRepository
 import com.example.domain.entity.AirEntity
 import com.example.domain.entity.City
 import com.example.domain.entity.Coordinates
+import com.example.domain.executeWithResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -16,34 +17,26 @@ class AirRepositoryImpl @Inject constructor(
     private val airService: AirService,
     private val weatherService: WeatherService
 ) : AirRepository {
-    override fun loadingAirByCity(city: City) = flow {
-        try {
+    override suspend fun loadingAirByCity(city: City): ResponseResult<AirEntity> {
+        return executeWithResponse {
             val coordinates = getCityByCoordinates(city)
             airService.getAirPollutionByCoordinate(
-                lat = coordinates.lat,
-                lon = coordinates.lon
-            ).body()?.toAirEntity()?.let { entity ->
-                emit(ResponseResult.Success(entity))
-            } ?: run {
-                throw NotFoundException()
-            }
-        } catch (ex: Exception) {
-            emit(ResponseResult.Error(ex))
+                lon = coordinates.lon,
+                lat = coordinates.lat
+            ).body()
+                ?.toAirEntity()
+                ?: throw NotFoundException()
         }
     }
 
-    override fun loadingAirByCoordinates(coordinates: Coordinates) = flow {
-        try {
+    override suspend fun loadingAirByCoordinates(coordinates: Coordinates): ResponseResult<AirEntity> {
+        return executeWithResponse {
             airService.getAirPollutionByCoordinate(
-                lat = coordinates.lat,
-                lon = coordinates.lon
-            ).body()?.toAirEntity()?.let { entity ->
-                emit(ResponseResult.Success(entity))
-            } ?: run {
-                throw NotFoundException()
-            }
-        } catch (ex: Exception) {
-            emit(ResponseResult.Error(ex))
+                lon = coordinates.lon,
+                lat = coordinates.lat
+            ).body()
+                ?.toAirEntity()
+                ?: throw NotFoundException()
         }
     }
 

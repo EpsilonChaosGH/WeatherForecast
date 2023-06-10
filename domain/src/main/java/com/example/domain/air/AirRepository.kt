@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AirRepository {
 
-    fun loadingAirByCity(city: City): Flow<ResponseResult<AirEntity>>
+    suspend fun loadingAirByCity(city: City): ResponseResult<AirEntity>
 
-    fun loadingAirByCoordinates(coordinates: Coordinates): Flow<ResponseResult<AirEntity>>
+    suspend fun loadingAirByCoordinates(coordinates: Coordinates): ResponseResult<AirEntity>
 
 }

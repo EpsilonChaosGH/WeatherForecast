@@ -1,4 +1,4 @@
-package com.example.weatherforecast.models
+package com.example.weatherforecast.entity
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
