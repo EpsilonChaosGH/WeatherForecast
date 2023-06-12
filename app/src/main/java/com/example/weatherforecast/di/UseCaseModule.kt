@@ -16,7 +16,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class GetWeatherByCityUseCaseModule {
+abstract class UseCaseModule {
 
     @Binds
     @ViewModelScoped

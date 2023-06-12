@@ -18,7 +18,8 @@ import androidx.room.*
     ]
 )
 data class ForecastDbEntity(
-    @PrimaryKey @ColumnInfo(name = "city_id") val id: Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long,
+    @ColumnInfo(name = "city_id") val city_id: Long,
     @ColumnInfo(name = "city_forecast") val city: String,
     @ColumnInfo(name = "temperature_forecast") val temperature: Double,
     @ColumnInfo(name = "icon_forecast") val icon: String,

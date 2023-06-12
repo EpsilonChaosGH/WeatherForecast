@@ -9,7 +9,7 @@ internal fun ForecastResponse.toForecastList(): List<ForecastEntity> {
     list.map {
         forecastList.add(
             ForecastEntity(
-                id = city.id,
+                city_id = city.id,
                 city = city.name,
                 temperature = it.main.temp,
                 icon = "ic_${it.weather.firstOrNull()?.icon}",
@@ -21,7 +21,8 @@ internal fun ForecastResponse.toForecastList(): List<ForecastEntity> {
 }
 
 internal fun ForecastEntity.toForecastDbEntity() = ForecastDbEntity(
-    id = id,
+    id = 0,
+    city_id = city_id,
     city = city,
     temperature = temperature,
     icon = icon,
@@ -29,7 +30,7 @@ internal fun ForecastEntity.toForecastDbEntity() = ForecastDbEntity(
 )
 
 internal fun ForecastDbEntity.toForecastEntity() = ForecastEntity(
-    id = id,
+    city_id = city_id,
     city = city,
     temperature = temperature,
     icon = icon,
