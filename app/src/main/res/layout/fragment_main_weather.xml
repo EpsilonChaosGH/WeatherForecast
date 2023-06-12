@@ -214,7 +214,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:itemCount="1"
-            tools:listitem="@layout/item_weather_forecast" />
+            tools:listitem="@layout/item_forecast" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/airContainerNO2"

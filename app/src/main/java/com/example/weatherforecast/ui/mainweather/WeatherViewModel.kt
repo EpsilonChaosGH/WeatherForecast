@@ -36,7 +36,7 @@ class WeatherViewModel @Inject constructor(
 
     init {
         listenMainWeather()
-        getWeatherByCity(City("nelidovo"))
+        getWeatherByCity(City("tver"))
     }
 
     private fun listenMainWeather() {

@@ -19,4 +19,7 @@ internal fun MainWeatherDbEntity.toMainWeatherEntity() = MainWeatherEntity(
     weatherEntity = weather.weather.toWeatherEntity(weather.id),
     airEntity = weather.air.toAirEntity(),
     forecastEntityList = forecastList.map { it.toForecastEntity() }
-)
+).apply {
+    Log.e("aaaaqwe",forecastList.size.toString())
+
+}
