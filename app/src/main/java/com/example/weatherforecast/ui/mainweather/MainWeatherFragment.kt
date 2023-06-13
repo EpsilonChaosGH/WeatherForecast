@@ -2,14 +2,20 @@ package com.example.weatherforecast.ui.mainweather
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.domain.entity.City
 import com.example.domain.isError
 import com.example.domain.isSucceeded
 import com.example.domain.success
@@ -38,10 +44,38 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
             recyclerView.adapter = adapter
             recyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+            refreshLayout.setColorSchemeResources(R.color.main_text_color)
+            refreshLayout.setProgressBackgroundColorSchemeResource(R.color.main_color)
+            refreshLayout.setOnRefreshListener {
+
+
+            }
         }
 
+        observeEditorActionListener()
         observeMainState()
         observeEvents()
+    }
+
+    private fun observeEditorActionListener() {
+        binding.cityEditText.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                try {
+                    if (binding.cityEditText.text?.isBlank() == true) {
+                        throw RuntimeException(getString(R.string.error_404_city_not_found))
+                    } else {
+                        viewModel.getWeatherByCity(
+                            City(binding.cityEditText.text.toString())
+                        )
+                    }
+                    return@OnEditorActionListener true
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+            false
+        })
     }
 
     private fun observeEvents() {

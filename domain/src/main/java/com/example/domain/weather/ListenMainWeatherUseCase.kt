@@ -8,6 +8,6 @@ class ListenMainWeatherUseCase(
     private val weatherDbRepository: WeatherDbRepository
 ) {
     fun listenMainWeather(): Flow<MainWeatherEntity?> {
-        return weatherDbRepository.getMainWeatherFlow()
+        return weatherDbRepository.getMainWeatherByIdFlow()
     }
 }
