@@ -1,15 +1,12 @@
 package com.example.domain
 
-import com.example.domain.entity.ForecastEntity
 import com.example.domain.entity.MainWeatherEntity
-import com.example.domain.entity.WeatherAndAirEntity
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherDbRepository {
 
-    fun getMainWeatherFlow(): Flow<MainWeatherEntity?>
+    fun getMainWeatherByIdFlow(): Flow<MainWeatherEntity?>
 
-    suspend fun insertMainWeather(weather: WeatherAndAirEntity)
+    suspend fun insertMainWeather(weather: MainWeatherEntity)
 
-    suspend fun insertForecast(forecast: List<ForecastEntity>)
 }

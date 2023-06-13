@@ -2,16 +2,16 @@ package com.example.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.dbentity.ForecastDbEntity
-import com.example.data.dbentity.WeatherAndAirDbEntity
+import androidx.room.TypeConverters
+import com.example.data.dbentity.MainWeatherDbEntity
 import com.example.data.weather.WeatherDao
 
 @Database(
     entities = [
-        WeatherAndAirDbEntity::class,
-        ForecastDbEntity::class
+        MainWeatherDbEntity::class
     ], version = 1
 )
+@TypeConverters(ForecastConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao

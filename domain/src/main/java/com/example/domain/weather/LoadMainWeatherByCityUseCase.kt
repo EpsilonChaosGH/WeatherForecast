@@ -4,7 +4,6 @@ import com.example.domain.WeatherDbRepository
 import com.example.domain.air.AirRepository
 import com.example.domain.entity.City
 import com.example.domain.entity.MainWeatherEntity
-import com.example.domain.entity.WeatherAndAirEntity
 import com.example.domain.forecast.ForecastRepository
 import com.example.domain.getResult
 
@@ -22,14 +21,13 @@ class LoadMainWeatherByCityUseCase(
         val forecast = forecastRepository.loadingForecastByCity(city).getResult()
 
         weatherDbRepository.insertMainWeather(
-            WeatherAndAirEntity(
+            MainWeatherEntity(
                 id = weather.id,
                 isFavorites = false,
                 weatherEntity = weather,
-                airEntity = air
+                airEntity = air,
+                forecastEntityList = forecast
             )
         )
-
-        weatherDbRepository.insertForecast(forecast)
     }
 }

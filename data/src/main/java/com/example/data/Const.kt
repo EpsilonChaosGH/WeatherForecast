@@ -8,6 +8,7 @@ object Const {
     const val DEFAULT_LAT = "35.6895"
     const val DEFAULT_CITY = "TOKYO"
     const val UNITS_METRIC = "metric"
+    const val MAIN_WEATHER_KEY = "MAIN_WEATHER_KEY"
     const val LANG_RU = "ru"
     const val CNT = "24"
 }
