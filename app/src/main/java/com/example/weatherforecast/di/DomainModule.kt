@@ -5,6 +5,7 @@ import com.example.domain.air.AirRepository
 import com.example.domain.forecast.ForecastRepository
 import com.example.domain.weather.ListenMainWeatherUseCase
 import com.example.domain.weather.LoadMainWeatherByCityUseCase
+import com.example.domain.weather.LoadMainWeatherByCoordinatesUseCase
 import com.example.domain.weather.WeatherRepository
 import dagger.Module
 import dagger.Provides
@@ -25,6 +26,22 @@ object DomainModule {
         weatherDbRepository: WeatherDbRepository
     ): LoadMainWeatherByCityUseCase {
         return LoadMainWeatherByCityUseCase(
+            weatherRepository,
+            forecastRepository,
+            airRepository,
+            weatherDbRepository
+        )
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideLoadMainWeatherByCoordinatesUseCase(
+        weatherRepository: WeatherRepository,
+        forecastRepository: ForecastRepository,
+        airRepository: AirRepository,
+        weatherDbRepository: WeatherDbRepository
+    ): LoadMainWeatherByCoordinatesUseCase {
+        return LoadMainWeatherByCoordinatesUseCase(
             weatherRepository,
             forecastRepository,
             airRepository,

@@ -1,11 +1,13 @@
 package com.example.weatherforecast.ui.mainweather
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.City
+import com.example.domain.entity.Coordinates
 import com.example.domain.weather.ListenMainWeatherUseCase
 import com.example.domain.weather.LoadMainWeatherByCityUseCase
+import com.example.domain.weather.LoadMainWeatherByCoordinatesUseCase
+import com.example.weatherforecast.R
 import com.example.weatherforecast.SideEffect
 import com.example.weatherforecast.entity.MainWeatherState
 import com.example.weatherforecast.mappers.toMainWeatherState
@@ -21,11 +23,12 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val loadMainWeatherByCityUseCase: LoadMainWeatherByCityUseCase,
+    private val loadMainWeatherByCoordinatesUseCase: LoadMainWeatherByCoordinatesUseCase,
     private val listenMainWeatherUseCase: ListenMainWeatherUseCase
 ) : ViewModel() {
 
-    private val _showMessageResEvent = MutableStateFlow<SideEffect<String?>>(SideEffect(null))
-    val showErrorMessageResEvent = _showMessageResEvent.asStateFlow()
+    private val _showMessageResEvent = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
+    val showMessageResEvent = _showMessageResEvent.asStateFlow()
 
     private val _state = MutableStateFlow<MainWeatherState?>(null)
     val state: StateFlow<MainWeatherState?> = _state.asStateFlow()
@@ -44,22 +47,33 @@ class WeatherViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun getWeatherByCity(city: City) {
+    fun showMessage(messageRes: Int) {
+        _showMessageResEvent.value = SideEffect(messageRes)
+    }
+
+    fun getMainWeatherByCity(city: City) {
         viewModelScope.launch {
             try {
                 loadMainWeatherByCityUseCase.loadingMainWeatherByCity(city)
             } catch (ex: Exception) {
-//                _showMessageResEvent.value = SideEffect(ex.message)
-                Log.e("aaaaa catch",ex.message.toString())
-                Log.e("aaaaa catch",ex.toString())
-                _showMessageResEvent.value = SideEffect("MMMMMMMMMMMMMMMM")
+                showMessage(R.string.error)
             }
         }
+    }
 
+    fun getMainWeatherByCoordinates(coordinates: Coordinates) {
+        viewModelScope.launch {
+            try {
+                loadMainWeatherByCoordinatesUseCase.loadingMainWeatherByCity(coordinates)
+            } catch (ex: Exception) {
+                showMessage(R.string.error)
+            }
+        }
+    }
 //        getWeatherByCityUseCase.getWeatherByCity(city)
 //            .onEach {
 //                _state.value = it
 //            }
 //            .launchIn(viewModelScope)
-    }
+
 }

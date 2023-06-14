@@ -22,11 +22,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-//        kapt {
-//            arguments {
-//                arg("room.schemaLocation", "$projectDir/schemas")
-//            }
-//        }
     }
 
     buildTypes {
@@ -76,6 +71,7 @@ dependencies {
     }
 
     dep.other.apply {// Miscellaneous required libraries
+        implementation(playServices)
         implementation(material)
         implementation(coroutines)
         implementation(viewBindingPropDel)

@@ -1,5 +1,6 @@
 package com.example.data.weather
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.example.data.NotFoundException
 import com.example.data.mappers.toWeatherEntity
@@ -16,11 +17,20 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
     @WorkerThread
     override suspend fun loadingWeatherByCity(city: City): ResponseResult<WeatherEntity> {
+        test()
         return executeWithResponse {
             service.getWeatherByCity(city.city).body()
                 ?.toWeatherEntity()
                 ?: throw NotFoundException()
         }
+    }
+
+    suspend fun test() {
+        val x = service.getWeatherByCity("asdawdasdasdasd")
+        val xx = service.getWeatherByCity("asdawdasdasdasd").message()
+
+        Log.e("AAAAAtest",xx)
+        Log.e("AAAAAtest",x.errorBody()?.string().toString())
     }
 
     @WorkerThread

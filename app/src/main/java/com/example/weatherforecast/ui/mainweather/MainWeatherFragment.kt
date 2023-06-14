@@ -1,31 +1,35 @@
 package com.example.weatherforecast.ui.mainweather
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
+import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.domain.entity.City
-import com.example.domain.isError
-import com.example.domain.isSucceeded
-import com.example.domain.success
+import com.example.domain.entity.Coordinates
 import com.example.weatherforecast.R
 import com.example.weatherforecast.collectEventFlow
 import com.example.weatherforecast.collectFlow
 import com.example.weatherforecast.databinding.FragmentMainWeatherBinding
 import com.example.weatherforecast.entity.AirState
-import com.example.weatherforecast.mappers.toWeatherState
 import com.example.weatherforecast.entity.WeatherState
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +40,15 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
     private val viewModel by viewModels<WeatherViewModel>()
 
     private val adapter = ForecastAdapter()
+
+    private val fusedLocationClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+    private val requestLocationLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+        ::onGotLocationPermissionResult
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +64,7 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
 
 
             }
+            searchByCoordinatesImageView.setOnClickListener { getWeatherByCoordinates() }
         }
 
         observeEditorActionListener()
@@ -65,7 +79,7 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
                     if (binding.cityEditText.text?.isBlank() == true) {
                         throw RuntimeException(getString(R.string.error_404_city_not_found))
                     } else {
-                        viewModel.getWeatherByCity(
+                        viewModel.getMainWeatherByCity(
                             City(binding.cityEditText.text.toString())
                         )
                     }
@@ -79,7 +93,7 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
     }
 
     private fun observeEvents() {
-        collectEventFlow(viewModel.showErrorMessageResEvent) { massage ->
+        collectEventFlow(viewModel.showMessageResEvent) { massage ->
             Toast.makeText(requireContext(), massage, Toast.LENGTH_SHORT).show()
         }
     }
@@ -135,6 +149,70 @@ class MainWeatherFragment : Fragment(R.layout.fragment_main_weather) {
             qualityPM25.setTextColor(
                 ContextCompat.getColor(requireContext(), airState.pm25Quality.colorResId)
             )
+        }
+    }
+
+    private fun getWeatherByCoordinates() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestLocationLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            return
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val coordinates = Coordinates(
+                        lat = location.latitude.toString(),
+                        lon = location.longitude.toString()
+                    )
+                    viewModel.getMainWeatherByCoordinates(coordinates)
+                } else {
+                    viewModel.showMessage(R.string.error_gps_not_found)
+                }
+            }
+    }
+
+    private fun onGotLocationPermissionResult(granted: Boolean) {
+        if (granted) {
+            viewModel.showMessage(R.string.permission_grated)
+        } else {
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                askUserForOpeningAppSettings()
+            } else {
+                viewModel.showMessage(R.string.permissions_denied)
+            }
+        }
+    }
+
+    private fun askUserForOpeningAppSettings() {
+        val appSettingsIntent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", requireActivity().packageName, null)
+        )
+        if (requireActivity().packageManager.resolveActivity(
+                appSettingsIntent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            ) == null
+        ) {
+            viewModel.showMessage(R.string.permissions_denied_forever)
+        } else {
+
+            val listener = DialogInterface.OnClickListener { _, _ -> }
+            val listenerSettings = DialogInterface.OnClickListener { _, _ ->
+                startActivity(appSettingsIntent)
+            }
+            val builder = AlertDialog.Builder(requireContext())
+                .setPositiveButton(R.string.button_open_settings, listenerSettings)
+                .setNeutralButton(R.string.button_cancel, listener)
+                .create()
+            builder.setView(layoutInflater.inflate(R.layout.dialog_gps_settings, null))
+            builder.show()
         }
     }
 }

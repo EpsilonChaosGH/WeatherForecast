@@ -7,6 +7,12 @@ import com.example.internal.Versions
 object Other {
 
     /**
+     * [Play Services](https://developers.google.com/android/guides/setup)
+     */
+    const val playServices =
+        "com.google.android.gms:play-services-location:${Versions.playServices}"
+
+    /**
      * [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
      */
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
