@@ -26,6 +26,7 @@ object Versions {
     const val swipeRefresh = "1.1.0"
 
     // other
+    const val playServices = "21.0.1"
     const val coroutines = "1.7.1"
     const val material = "1.9.0"
     const val viewBindingPropDel = "1.4.4"

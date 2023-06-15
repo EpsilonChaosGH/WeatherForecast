@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.air.AirService
-import com.example.data.forecast.ForecastService
-import com.example.data.weather.WeatherService
+import com.example.data.source.services.AirService
+import com.example.data.source.services.ForecastService
+import com.example.data.source.services.CurrentWeatherService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,8 +17,8 @@ object ServicesModule {
 
     @Provides
     @Singleton
-    fun providesServiceWeather(retrofit: Retrofit): WeatherService {
-        return retrofit.create(WeatherService::class.java)
+    fun providesServiceWeather(retrofit: Retrofit): CurrentWeatherService {
+        return retrofit.create(CurrentWeatherService::class.java)
     }
 
     @Provides

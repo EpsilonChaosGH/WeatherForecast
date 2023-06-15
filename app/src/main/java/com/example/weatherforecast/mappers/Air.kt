@@ -1,13 +1,13 @@
 package com.example.weatherforecast.mappers
 
 
-import com.example.domain.entity.AirEntity
+import com.example.data.entity.dbentity.AirDbEntity
 import com.example.weatherforecast.entity.AirQuality
 import com.example.weatherforecast.entity.AirState
 import kotlin.math.roundToInt
 
 
-fun AirEntity.toAirState() = AirState(
+fun AirDbEntity.toAirState() = AirState(
     no2 = "${no2.roundToInt()} μg/m3",
     no2Quality = checkNo2(no2),
     o3 = "${o3.roundToInt()} μg/m3",

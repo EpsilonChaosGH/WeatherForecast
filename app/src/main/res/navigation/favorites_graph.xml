@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_favorite">
         <action
             android:id="@+id/action_favoritesFragment_to_weather_graph"
-            app:destination="@id/main_weather_graph" />
+            app:destination="@id/weather_graph" />
     </fragment>
-    <include app:graph="@navigation/main_weather_graph" />
+    <include app:graph="@navigation/weather_graph" />
 </navigation>

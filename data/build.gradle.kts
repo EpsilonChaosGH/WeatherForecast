@@ -41,8 +41,6 @@ android {
 
 dependencies {
 
-    implementation(project(path = ":domain"))
-
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.21")
 
     dep.hilt.apply { // https://dagger.dev/hilt/

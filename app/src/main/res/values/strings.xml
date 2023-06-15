@@ -4,6 +4,7 @@
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="button_open_settings">Open Settings</string>
+    <string name="button_cancel">Cancel</string>
 
     <!--  App errors and server response status code  -->
     <string name="error_401_invalid_api_key">Invalid API key</string>
@@ -17,8 +18,7 @@
     <!--  App permissions  -->
     <string name="permission_grated">Permission grated</string>
     <string name="permissions_denied">Permissions denied</string>
-    <string name="permissions_denied_forever">Unable to search weather by GPS. Go to
-        Settings > Permissions, then allow the location permissions, and try again:</string>
+    <string name="permissions_denied_forever">Unable to search weather by GPS. Go to Settings > Permissions, then allow the location permissions, and try again:</string>
 
     <!-- Air quality -->
     <string name="good">Good</string>

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@id/main_weather_graph"
+        android:id="@id/weather_graph"
         android:icon="@drawable/ic_cloudy"
         android:title="@string/menu_weather" />
     <item
