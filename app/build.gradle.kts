@@ -49,7 +49,6 @@ dependencies {
 
     //implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.21")
 
-    implementation(project(path = ":domain"))
     implementation(project(path = ":data"))
 
 

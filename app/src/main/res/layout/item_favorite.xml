@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mainWeatherContainer"
+    android:id="@+id/weatherContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/low_space"
@@ -43,7 +43,7 @@
         style="@style/WeatherDetailsTextView"
         android:layout_marginStart="@dimen/low_space"
         android:text="@string/test_date"
-        app:layout_constraintBottom_toBottomOf="@id/mainWeatherContainer"
+        app:layout_constraintBottom_toBottomOf="@id/weatherContainer"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -51,7 +51,7 @@
         style="@style/WeatherDetailsTextView"
         android:layout_marginEnd="@dimen/low_space"
         android:text="@string/test_weather_description"
-        app:layout_constraintBottom_toBottomOf="@id/mainWeatherContainer"
+        app:layout_constraintBottom_toBottomOf="@id/weatherContainer"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView

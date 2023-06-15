@@ -2,8 +2,9 @@ package com.example.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.data.AppDatabase
-import com.example.data.weather.WeatherDao
+import com.example.data.source.db.AppDatabase
+import com.example.data.source.db.FavoritesDao
+import com.example.data.source.db.WeatherDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,8 @@ object RoomModule {
     @Provides
     @Singleton
     fun weatherDao(db: AppDatabase): WeatherDao = db.weatherDao()
+
+    @Provides
+    @Singleton
+    fun favoritesDao(db: AppDatabase): FavoritesDao = db.favoritesDao()
 }

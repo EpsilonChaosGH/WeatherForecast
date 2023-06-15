@@ -1,12 +1,22 @@
 package com.example.data.mappers
 
-import com.example.data.dbentity.WeatherDbEntity
-import com.example.data.entity.WeatherResponse
-import com.example.domain.entity.WeatherEntity
+import com.example.data.Const
+import com.example.data.entity.response.CurrentWeatherResponse
+import com.example.data.entity.ForecastEntity
+import com.example.data.entity.dbentity.AirDbEntity
+import com.example.data.entity.dbentity.WeatherDbEntity
 
 
-internal fun WeatherResponse.toWeatherEntity(): WeatherEntity = WeatherEntity(
+internal fun CurrentWeatherResponse.toWeatherDbEntity(
+    isFavorites: Boolean,
+    forecast: List<ForecastEntity>,
+    air: AirDbEntity,
+): WeatherDbEntity = WeatherDbEntity(
+    weatherKey = Const.WEATHER_KEY,
+    isFavorites = isFavorites,
     id = id,
+    lon = coord.lon.toString(),
+    lat = coord.lat.toString(),
     city = name,
     country = sys.country,
     temperature = main.temp,
@@ -18,41 +28,6 @@ internal fun WeatherResponse.toWeatherEntity(): WeatherEntity = WeatherEntity(
     windSpeed = wind.speed,
     data = dt,
     timezone = timezone,
-    lon = coord.lon.toString(),
-    lat = coord.lat.toString(),
-)
-
-internal fun WeatherEntity.toWeatherDbEntity() = WeatherDbEntity(
-    city = city,
-    country = country,
-    temperature = temperature,
-    icon = icon,
-    description = description,
-    feelsLike = feelsLike,
-    humidity = humidity,
-    pressure = pressure,
-    windSpeed = windSpeed,
-    data = data,
-    timezone = timezone,
-    lon = lon,
-    lat = lat
-)
-
-internal fun WeatherDbEntity.toWeatherEntity(
-    id: Long
-) = WeatherEntity(
-    id = id,
-    city =city,
-    country = country,
-    temperature = temperature,
-    icon = icon,
-    description = description,
-    feelsLike = feelsLike,
-    humidity = humidity,
-    pressure = pressure,
-    windSpeed = windSpeed,
-    data = data,
-    timezone = timezone,
-    lon = lon,
-    lat = lat
+    forecast = forecast,
+    air = air
 )
