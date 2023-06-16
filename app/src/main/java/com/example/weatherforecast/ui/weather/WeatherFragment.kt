@@ -100,7 +100,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private fun observeWeatherState() {
         collectFlow(viewModel.state) { state ->
             with(binding) {
-                Log.e("aaaaa11", state.city)
                 cityNameTextView.text = state.city
                 temperatureTextView.text = state.temperature
                 currentWeatherTextView.text = state.description
@@ -120,7 +119,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 else favoriteImageView.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
             setAirState(state.airState)
-            adapter.forecastList = state.forecastState
+            adapter.items = state.forecastState
         }
     }
 
