@@ -11,7 +11,7 @@ fun String.toTime(pattern: String) =
     SimpleDateFormat(pattern, Locale.getDefault()).parse(this)?.time ?: 0L
 
 fun Long.format(pattern: String, timeZone: Long): String =
-    SimpleDateFormat(pattern, Locale.getDefault()).format(this + timeZone)
+    SimpleDateFormat(pattern, Locale.getDefault()).format((this + timeZone) * 1000)
 
 fun Long.diffFormat(): String {
     return when (val diffTime = Calendar.getInstance().time.time - this) {
