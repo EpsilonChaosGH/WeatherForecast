@@ -9,15 +9,16 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,20 +51,19 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         ::onGotLocationPermissionResult
     )
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-            refreshLayout.setColorSchemeResources(R.color.main_text_color)
-            refreshLayout.setProgressBackgroundColorSchemeResource(R.color.main_color)
-            refreshLayout.setOnRefreshListener { viewModel.refreshWeather() }
-            favoriteImageView.setOnClickListener { viewModel.addOrRemoveFromFavorite() }
-            searchByCoordinatesImageView.setOnClickListener { getWeatherByCoordinates() }
-        }
+        refreshLayout.setColorSchemeResources(R.color.main_text_color)
+        refreshLayout.setProgressBackgroundColorSchemeResource(R.color.main_color)
+        refreshLayout.setOnRefreshListener { viewModel.refreshWeather() }
+
+        favoriteImageView.setOnClickListener { viewModel.addOrRemoveFromFavorite() }
+        searchByCoordinatesImageView.setOnClickListener { getWeatherByCoordinates() }
 
         observeEditorActionListener()
         observeWeatherState()
@@ -97,59 +97,56 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
     }
 
-    private fun observeWeatherState() {
+    private fun observeWeatherState() = with(binding) {
         collectFlow(viewModel.state) { state ->
-            with(binding) {
-                cityNameTextView.text = state.city
-                temperatureTextView.text = state.temperature
-                currentWeatherTextView.text = state.description
-                currentDateTextView.text = state.data
-                feelsLikeTextView.text = state.feelsLike
-                humidityTextView.text = state.humidity
-                pressureTextView.text = state.pressure
-                windSpeedTextView.text = state.windSpeed
-                progressBar.visibility = if (state.isLoading) View.VISIBLE else View.INVISIBLE
-                cityTextInput.isEnabled = !state.isLoading
-                searchByCoordinatesImageView.isEnabled = !state.isLoading
-                weatherIconImageView.setImageResource(state.icon.iconResId)
-                refreshLayout.isRefreshing = state.isRefreshing
-                cityEditText.error =
-                    if (state.emptyCityError) getString(R.string.error_field_is_empty) else null
-                if (state.isFavorites) favoriteImageView.setImageResource(R.drawable.ic_baseline_favorite_24)
-                else favoriteImageView.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-            setAirState(state.airState)
+            cityNameTextView.text = state.city
+            temperatureTextView.text = state.temperature
+            currentWeatherTextView.text = state.description
+            currentDateTextView.text = state.data
+            feelsLikeTextView.text = state.feelsLike
+            humidityTextView.text = state.humidity
+            pressureTextView.text = state.pressure
+            windSpeedTextView.text = state.windSpeed
+            progressBar.isVisible = state.isLoading
+            cityTextInput.isEnabled = !state.isLoading
+            searchByCoordinatesImageView.isEnabled = !state.isLoading
+            weatherIconImageView.setImageResource(state.icon.iconResId)
+            refreshLayout.isRefreshing = state.isRefreshing
+            favoriteImageView.setFavorites(state.isFavorites)
+            cityEditText.error =
+                if (state.emptyCityError) getString(R.string.error_field_is_empty) else null
             adapter.items = state.forecastState
+            setAirState(state.airState)
         }
     }
 
-    @SuppressLint("ResourceType")
-    private fun setAirState(airState: AirState) {
-        with(binding) {
-            valueNO2.text = airState.no2
-            qualityNO2.text = getString(airState.no2Quality.qualityResId)
-            qualityNO2.setTextColor(
-                ContextCompat.getColor(requireContext(), airState.no2Quality.colorResId)
-            )
-
-            valueO3.text = airState.o3
-            qualityO3.text = getString(airState.o3Quality.qualityResId)
-            qualityO3.setTextColor(
-                ContextCompat.getColor(requireContext(), airState.o3Quality.colorResId)
-            )
-
-            valuePM10.text = airState.pm10
-            qualityPM10.text = getString(airState.pm10Quality.qualityResId)
-            qualityPM10.setTextColor(
-                ContextCompat.getColor(requireContext(), airState.pm10Quality.colorResId)
-            )
-
-            valuePM25.text = airState.pm25
-            qualityPM25.text = getString(airState.pm25Quality.qualityResId)
-            qualityPM25.setTextColor(
-                ContextCompat.getColor(requireContext(), airState.pm25Quality.colorResId)
-            )
+    private fun ImageView.setFavorites(isFavorites: Boolean) {
+        val icon = when (isFavorites) {
+            true -> R.drawable.ic_baseline_favorite_24
+            false -> R.drawable.ic_baseline_favorite_border_24
         }
+        setImageResource(icon)
+    }
+
+    @SuppressLint("ResourceType")
+    private fun setAirState(airState: AirState) = with(airState) {
+        with(binding) {
+            valueNO2.text = no2
+            qualityNO2.setQuality(no2Quality.qualityResId, no2Quality.colorResId)
+            valueO3.text = o3
+            qualityO3.setQuality(o3Quality.qualityResId, o3Quality.colorResId)
+            valuePM10.text = pm10
+            qualityPM10.setQuality(pm10Quality.qualityResId, pm10Quality.colorResId)
+            valuePM25.text = pm25
+            qualityPM25.setQuality(pm25Quality.qualityResId, pm25Quality.colorResId)
+        }
+    }
+
+    private fun TextView.setQuality(qualityResId: Int, colorResId: Int) {
+        this.text = getString(qualityResId)
+        this.setTextColor(
+            ContextCompat.getColor(requireContext(), colorResId)
+        )
     }
 
     private fun getWeatherByCoordinates() {

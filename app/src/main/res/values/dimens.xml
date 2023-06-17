@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="micro_space">3dp</dimen>
     <dimen name="low_space">6dp</dimen>
     <dimen name="medium_space">12dp</dimen>
+    <dimen name="big_space">16dp</dimen>
     <dimen name="large_space">30dp</dimen>
     <dimen name="big_width">260dp</dimen>
 </resources>

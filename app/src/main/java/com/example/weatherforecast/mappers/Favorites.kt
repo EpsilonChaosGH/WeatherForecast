@@ -13,6 +13,7 @@ internal fun List<FavoritesEntity>.toFavoritesState() =
     FavoritesState(this.map { it.toFavoritesItem() })
 
 internal fun FavoritesEntity.toFavoritesItem() = FavoritesItem(
+    cityId = cityId,
     city = city,
     country = country,
     temperature = "${temperature.roundToInt()}°C",

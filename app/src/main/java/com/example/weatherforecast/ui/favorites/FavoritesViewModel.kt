@@ -33,13 +33,23 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
+    fun deleteFromFavorites(id: Long) {
+        viewModelScope.launch {
+            favoritesRepository.deleteFromFavoritesById(id)
+        }
+    }
+
+    fun showDetails(id: Long) {
+
+    }
+
     private fun listenFavorites() {
         viewModelScope.launch {
             favoritesRepository.getFavoritesFlow().collect { favoritesList ->
                 if (!favoritesList.isNullOrEmpty()) {
                     _state.value = favoritesList.toFavoritesState()
                 } else {
-                    _state.value = null
+                    _state.value = _state.value?.copy(emptyListState = true)
                 }
             }
         }

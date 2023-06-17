@@ -7,6 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherforecast.databinding.ItemFavoriteBinding
 import com.example.weatherforecast.entity.FavoritesItem
 
+interface FavoritesListener {
+    fun delete(id: Long)
+    fun showDetails(id: Long)
+}
+
 class FavoritesDiffCallback(
     private val oldList: List<FavoritesItem>,
     private val newList: List<FavoritesItem>
@@ -28,21 +33,21 @@ class FavoritesDiffCallback(
     }
 }
 
-class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
+class FavoritesAdapter(
+    private val favoritesListener: FavoritesListener
+) : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
     class ViewHolder(
         private val binding: ItemFavoriteBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(item: FavoritesItem) = with(binding) {
+        fun onBind(item: FavoritesItem, listener: FavoritesListener) = with(binding) {
             cityNameTextView.text = item.city
             temperatureTextView.text = item.temperature
             currentDateTextView.text = item.data
             currentWeatherTextView.text = item.description
             weatherIconImageView.setImageResource(item.weatherType.iconResId)
-//            if (item.isFavorites) {
-//                favoriteImageView.setImageResource(R.drawable.ic_baseline_favorite_24)
-//            } else {
-//                favoriteImageView.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-//            }
+
+            favoriteImageView.setOnClickListener { listener.delete(item.cityId) }
+            itemView.setOnClickListener { listener.showDetails(item.cityId) }
         }
     }
 
@@ -54,16 +59,15 @@ class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
             diffResult.dispatchUpdatesTo(this)
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(items[position])
+        holder.onBind(items[position], favoritesListener)
     }
-
 
     override fun getItemCount(): Int = items.size
 }
