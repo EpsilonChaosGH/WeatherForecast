@@ -6,9 +6,11 @@ import com.example.data.mappers.toFavoritesEntity
 import com.example.data.source.db.AppDatabase
 import com.example.data.source.db.UpdateFavoritesTuple
 import com.example.data.source.services.CurrentWeatherService
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext

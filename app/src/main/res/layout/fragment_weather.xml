@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.50121653" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cityTextInput"
@@ -211,129 +211,170 @@
             android:layout_marginBottom="@dimen/low_space"
             android:background="@drawable/layout_bg_weather"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/airContainerNO2"
+            app:layout_constraintBottom_toTopOf="@+id/airView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:itemCount="1"
             tools:listitem="@layout/item_forecast" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/airContainerNO2"
-            style="@style/Layout"
-            android:layout_marginEnd="3dp"
+        <View
+            android:id="@+id/airView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/low_space"
+            android:layout_marginEnd="@dimen/micro_space"
+            android:layout_marginBottom="@dimen/low_space"
+            android:background="@drawable/layout_bg_weather"
+            app:layout_constraintBottom_toBottomOf="@+id/titleO3"
+            app:layout_constraintEnd_toEndOf="@+id/qualityNO2"
+            app:layout_constraintStart_toStartOf="@+id/titleNO2"
+            app:layout_constraintTop_toTopOf="@+id/titleNO2" />
+
+        <TextView
+            android:id="@+id/titleNO2"
+            style="@style/HintTextView.Air"
+            android:paddingStart="@dimen/big_space"
+            android:paddingTop="@dimen/low_space"
+            android:paddingEnd="@dimen/micro_space"
+            android:paddingBottom="@dimen/micro_space"
+            android:text="@string/title_no2"
+            app:layout_constraintBottom_toTopOf="@+id/titleO3"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/valueNO2"
+            style="@style/ValueTextView.Air"
+            android:paddingTop="@dimen/low_space"
+            android:paddingBottom="@dimen/micro_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titleNO2"
+            app:layout_constraintStart_toEndOf="@+id/startBarrierNO2"
+            app:layout_constraintTop_toTopOf="@+id/titleNO2" />
+
+        <TextView
+            android:id="@+id/qualityNO2"
+            style="@style/ValueTextView.AirQuality"
+            android:paddingHorizontal="@dimen/medium_space"
+            android:paddingTop="@dimen/low_space"
+            android:paddingBottom="@dimen/micro_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titleNO2"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineCenter"
+            app:layout_constraintTop_toTopOf="@+id/titleNO2" />
+
+        <TextView
+            android:id="@+id/titleO3"
+            style="@style/HintTextView.Air"
+            android:paddingStart="16dp"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingEnd="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            android:text="@string/title_o3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guidelineCenter"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/titleNO2"
-                style="@style/HintTextView.Air"
-                android:text="@string/title_no2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/valueO3"
+            style="@style/ValueTextView.Air"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titleO3"
+            app:layout_constraintStart_toEndOf="@+id/startBarrierNO2"
+            app:layout_constraintTop_toTopOf="@+id/titleO3" />
 
-            <TextView
-                android:id="@+id/valueNO2"
-                style="@style/ValueTextView.Air"
-                app:layout_constraintBottom_toBottomOf="@+id/titleNO2"
-                app:layout_constraintStart_toEndOf="@+id/startBarrierNO2"
-                app:layout_constraintTop_toTopOf="@+id/titleNO2" />
+        <TextView
+            android:id="@+id/qualityO3"
+            style="@style/ValueTextView.AirQuality"
+            android:paddingHorizontal="@dimen/medium_space"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titleO3"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineCenter"
+            app:layout_constraintTop_toTopOf="@+id/titleO3" />
 
-            <TextView
-                android:id="@+id/qualityNO2"
-                style="@style/ValueTextView.AirQuality"
-                app:layout_constraintBottom_toBottomOf="@+id/titleNO2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/titleNO2" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/startBarrierNO2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="titleNO2,titleO3" />
 
-            <TextView
-                android:id="@+id/titleO3"
-                style="@style/HintTextView.Air"
-                android:layout_marginTop="@dimen/low_space"
-                android:text="@string/title_o3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleNO2" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/micro_space"
+            android:layout_marginEnd="@dimen/low_space"
+            android:layout_marginBottom="@dimen/low_space"
+            android:background="@drawable/layout_bg_weather"
+            app:layout_constraintBottom_toBottomOf="@+id/titlePM25"
+            app:layout_constraintEnd_toEndOf="@+id/qualityPM10"
+            app:layout_constraintStart_toStartOf="@+id/titlePM10"
+            app:layout_constraintTop_toTopOf="@+id/titlePM10" />
 
-            <TextView
-                android:id="@+id/valueO3"
-                style="@style/ValueTextView.Air"
-                app:layout_constraintBottom_toBottomOf="@+id/titleO3"
-                app:layout_constraintStart_toEndOf="@+id/startBarrierNO2"
-                app:layout_constraintTop_toTopOf="@+id/titleO3" />
+        <TextView
+            android:id="@+id/titlePM10"
+            style="@style/HintTextView.Air"
+            android:paddingStart="@dimen/medium_space"
+            android:paddingTop="@dimen/low_space"
+            android:paddingEnd="@dimen/micro_space"
+            android:paddingBottom="@dimen/micro_space"
+            android:text="@string/title_pm10"
+            app:layout_constraintBottom_toTopOf="@+id/titlePM25"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter" />
 
-            <TextView
-                android:id="@+id/qualityO3"
-                style="@style/ValueTextView.AirQuality"
-                app:layout_constraintBottom_toBottomOf="@+id/titleO3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/titleO3" />
+        <TextView
+            android:id="@+id/valuePM10"
+            style="@style/ValueTextView.Air"
+            android:paddingTop="@dimen/low_space"
+            android:paddingBottom="@dimen/micro_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titlePM10"
+            app:layout_constraintStart_toEndOf="@+id/startBarrierPM"
+            app:layout_constraintTop_toTopOf="@+id/titlePM10" />
 
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/startBarrierNO2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="end"
-                app:constraint_referenced_ids="titleNO2,titleO3" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/airContainerPM"
-            style="@style/Layout"
-            android:layout_marginStart="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/qualityPM10"
+            style="@style/ValueTextView.AirQuality"
+            android:paddingHorizontal="@dimen/big_space"
+            android:paddingTop="@dimen/low_space"
+            android:paddingBottom="@dimen/micro_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titlePM10"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guidelineCenter">
+            app:layout_constraintTop_toTopOf="@+id/titlePM10" />
 
-            <TextView
-                android:id="@+id/titlePM10"
-                style="@style/HintTextView.Air"
-                android:text="@string/title_pm10"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/titlePM25"
+            style="@style/HintTextView.Air"
+            android:paddingStart="12dp"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingEnd="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            android:text="@string/title_pm25"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter" />
 
-            <TextView
-                android:id="@+id/valuePM10"
-                style="@style/ValueTextView.Air"
-                app:layout_constraintBottom_toBottomOf="@+id/titlePM10"
-                app:layout_constraintStart_toEndOf="@+id/startBarrierPM"
-                app:layout_constraintTop_toTopOf="@+id/titlePM10" />
+        <TextView
+            android:id="@+id/valuePM25"
+            style="@style/ValueTextView.Air"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titlePM25"
+            app:layout_constraintStart_toEndOf="@+id/startBarrierPM"
+            app:layout_constraintTop_toTopOf="@+id/titlePM25" />
 
-            <TextView
-                android:id="@+id/qualityPM10"
-                style="@style/ValueTextView.AirQuality"
-                app:layout_constraintBottom_toBottomOf="@+id/titlePM10"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/titlePM10" />
+        <TextView
+            android:id="@+id/qualityPM25"
+            style="@style/ValueTextView.AirQuality"
+            android:paddingHorizontal="@dimen/big_space"
+            android:paddingTop="@dimen/micro_space"
+            android:paddingBottom="@dimen/medium_space"
+            app:layout_constraintBottom_toBottomOf="@+id/titlePM25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titlePM25" />
 
-            <TextView
-                android:id="@+id/titlePM25"
-                style="@style/HintTextView.Air"
-                android:layout_marginTop="@dimen/low_space"
-                android:text="@string/title_pm25"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titlePM10" />
-
-            <TextView
-                android:id="@+id/valuePM25"
-                style="@style/ValueTextView.Air"
-                app:layout_constraintBottom_toBottomOf="@+id/titlePM25"
-                app:layout_constraintStart_toEndOf="@+id/startBarrierPM"
-                app:layout_constraintTop_toTopOf="@+id/titlePM25" />
-
-            <TextView
-                android:id="@+id/qualityPM25"
-                style="@style/ValueTextView.AirQuality"
-                app:layout_constraintBottom_toBottomOf="@+id/titlePM25"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/titlePM25" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/startBarrierPM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="end"
-                app:constraint_referenced_ids="titlePM10, titlePM25" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/startBarrierPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="titlePM10, titlePM25" />
 
         <ProgressBar
             android:id="@+id/progressBar"

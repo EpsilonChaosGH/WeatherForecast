@@ -10,7 +10,7 @@ import com.example.weatherforecast.entity.ForecastState
 class ForecastDiffCallback(
     private val oldList: List<ForecastState>,
     private val newList: List<ForecastState>
-):DiffUtil.Callback(){
+) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 
     override fun getNewListSize(): Int = newList.size
@@ -30,8 +30,14 @@ class ForecastDiffCallback(
 
 class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ViewHolder>() {
     class ViewHolder(
-        val itemForecastBinding: ItemForecastBinding
-    ) : RecyclerView.ViewHolder(itemForecastBinding.root)
+        private val binding: ItemForecastBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(forecast: ForecastState) = with(binding) {
+            timeTextView.text = forecast.data
+            temperatureTextView.text = forecast.temperature
+            imageView.setImageResource(forecast.weatherType.iconResId)
+        }
+    }
 
     var items: List<ForecastState> = emptyList()
         set(newValue) {
@@ -48,18 +54,8 @@ class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val forecast = items[position]
-        bind(holder, forecast)
+        holder.onBind(items[position])
     }
 
     override fun getItemCount() = items.size
-
-    private fun bind(holder: ViewHolder, forecast: ForecastState) {
-        with(holder.itemForecastBinding) {
-            timeTextView.text = forecast.data
-            temperatureTextView.text = forecast.temperature
-
-            imageView.setImageResource(forecast.weatherType.iconResId)
-        }
-    }
 }

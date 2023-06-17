@@ -1,6 +1,7 @@
 package com.example.weatherforecast.entity
 
 data class FavoritesItem(
+    val cityId: Long,
     val city: String,
     val country: String,
     val temperature: String,
