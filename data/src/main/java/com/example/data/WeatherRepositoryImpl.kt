@@ -1,6 +1,5 @@
 package com.example.data
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import com.example.data.entity.dbentity.WeatherDbEntity
 import com.example.data.mappers.toAirEntity
@@ -32,13 +31,13 @@ class WeatherRepositoryImpl @Inject constructor(
         wrapBackendExceptions {
             val weather = currentWeatherService.getCurrentWeatherByCoordinates(
                 lat = coordinates.lat, lon = coordinates.lon
-            )
+            ).getResult()
             val forecast = forecastService.getForecastByCoordinate(
                 lat = coordinates.lat, lon = coordinates.lon
-            )
+            ).getResult()
             val air = airService.getAirByCoordinate(
                 lat = coordinates.lat, lon = coordinates.lon
-            )
+            ).getResult()
 
             wrapSQLiteException(ioDispatcher) {
                 appDatabase.weatherDao().insertWeather(
@@ -53,19 +52,12 @@ class WeatherRepositoryImpl @Inject constructor(
 
     @WorkerThread
     override suspend fun loadWeatherByCity(city: City) = wrapBackendExceptions {
-        try {
-            currentWeatherService.getCurrentWeatherByCity(city.city)
-        } catch (e: Exception) {
-            Log.e("aaaaaC", e.message.toString())
-            Log.e("aaaaaC", e.localizedMessage)
-            Log.e("aaaaaC", e.cause?.message.toString())
-            Log.e("aaaaaC", e.suppressed.toString())
-        }
-        val weather = currentWeatherService.getCurrentWeatherByCity(city.city)
-        val forecast = forecastService.getForecastByCity(city.city)
+
+        val weather = currentWeatherService.getCurrentWeatherByCity(city.city).getResult()
+        val forecast = forecastService.getForecastByCity(city.city).getResult()
         val air = airService.getAirByCoordinate(
             lat = weather.coord.lat.toString(), lon = weather.coord.lon.toString()
-        )
+        ).getResult()
 
         wrapSQLiteException(ioDispatcher) {
             appDatabase.weatherDao().insertWeather(

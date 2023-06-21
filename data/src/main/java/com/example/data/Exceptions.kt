@@ -1,13 +1,9 @@
 package com.example.data
 
 import android.database.sqlite.SQLiteException
-import com.squareup.moshi.JsonDataException
-import com.squareup.moshi.JsonEncodingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
 
 
 open class AppException : RuntimeException {
@@ -15,10 +11,6 @@ open class AppException : RuntimeException {
     constructor(message: String) : super(message)
     constructor(cause: Throwable) : super(cause)
 }
-
-class EmptyFieldException(
-    //val field: Field
-) : AppException()
 
 class ConnectionException(
     cause: Throwable
@@ -38,10 +30,6 @@ class InvalidApiKeyException(
 ) : AppException(cause = cause)
 
 class RequestRateLimitException(
-    cause: Throwable
-) : AppException(cause = cause)
-
-class ParseBackendResponseException(
     cause: Throwable
 ) : AppException(cause = cause)
 
@@ -70,19 +58,5 @@ suspend fun <T> wrapSQLiteException(
         val appException = StorageException()
         appException.initCause(e)
         throw appException
-    }
-}
-
-suspend fun <T> wrapRetrofitExceptions(block: suspend () -> T): T {
-    return try {
-        block()
-    } catch (e: AppException) {
-        throw e
-    } catch (e: JsonDataException) {
-        throw ParseBackendResponseException(e)
-    } catch (e: JsonEncodingException) {
-        throw ParseBackendResponseException(e)
-    } catch (e: IOException) {
-        throw ConnectionException(e)
     }
 }

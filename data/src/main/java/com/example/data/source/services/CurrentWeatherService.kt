@@ -2,6 +2,7 @@ package com.example.data.source.services
 
 import com.example.data.Const
 import com.example.data.entity.response.CurrentWeatherResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,7 +12,7 @@ interface CurrentWeatherService {
         @Query("q") city: String,
         @Query("appid") appId: String = Const.APP_ID,
         @Query("units") units: String = Const.UNITS_METRIC
-    ): CurrentWeatherResponse
+    ): Response<CurrentWeatherResponse>
 
     @GET("weather?")
     suspend fun getCurrentWeatherByCoordinates(
@@ -19,5 +20,5 @@ interface CurrentWeatherService {
         @Query("lon") lon: String,
         @Query("appid") appId: String = Const.APP_ID,
         @Query("units") units: String = Const.UNITS_METRIC
-    ): CurrentWeatherResponse
+    ): Response<CurrentWeatherResponse>
 }
