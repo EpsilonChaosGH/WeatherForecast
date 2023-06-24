@@ -6,8 +6,10 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.data.entity.City
 import com.example.weatherforecast.R
 import com.example.weatherforecast.collectFlow
 import com.example.weatherforecast.databinding.FragmentFavoriteBinding
@@ -25,8 +27,9 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
             viewModel.deleteFromFavorites(id)
         }
 
-        override fun showDetails(id: Long) {
-            viewModel.showDetails(id)
+        override fun showDetails(city: City) {
+            viewModel.loadWeatherByCity(city)
+            showDetails()
         }
     })
 
@@ -40,6 +43,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
         refreshLayout.setOnRefreshListener { viewModel.refreshFavorites() }
 
         observeFavoritesState()
+    }
+
+    private fun showDetails(){
+        findNavController().navigate(R.id.action_favoritesFragment_to_weather_graph)
     }
 
     private fun observeFavoritesState() = with(binding) {

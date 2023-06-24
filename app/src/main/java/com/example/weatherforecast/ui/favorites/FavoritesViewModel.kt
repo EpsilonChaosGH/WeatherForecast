@@ -3,6 +3,9 @@ package com.example.weatherforecast.ui.favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.FavoritesRepository
+import com.example.data.WeatherRepository
+import com.example.data.entity.City
+import com.example.data.entity.Coordinates
 import com.example.weatherforecast.entity.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
 import com.example.weatherforecast.mappers.toFavoritesState
@@ -15,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesRepository: FavoritesRepository,
+    private val weatherRepository: WeatherRepository
+
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<FavoritesState?>(null)
@@ -39,8 +44,10 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun showDetails(id: Long) {
-
+    fun loadWeatherByCity(city: City) {
+        viewModelScope.launch {
+            weatherRepository.loadWeatherByCity(city)
+        }
     }
 
     private fun listenFavorites() {
