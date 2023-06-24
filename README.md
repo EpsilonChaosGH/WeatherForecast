@@ -12,9 +12,9 @@ Weather Forecast is a simple weather and air pollution forecast application that
 
 ### Preview
 <p align="center">
-<img src="Vokoscreen_app.gif" width="32%"/>
-<img src="Screenshot_weather.png" width="32%"/>
-<img src="Screenshot_favorites.png" width="32%"/>/>
+<img src="screenshots/Vokoscreen_app.gif" width="32%"/>
+<img src="screenshots/Screenshot_weather.png" width="32%"/>
+<img src="screenshots/Screenshot_favorites.png" width="32%"/>/>
 </p>
 
 ### Libraries and tools 🛠
