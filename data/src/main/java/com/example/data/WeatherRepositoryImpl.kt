@@ -1,6 +1,7 @@
 package com.example.data
 
 import androidx.annotation.WorkerThread
+import androidx.fragment.app.Fragment
 import com.example.data.entity.dbentity.WeatherDbEntity
 import com.example.data.mappers.toAirEntity
 import com.example.data.mappers.toForecastList
