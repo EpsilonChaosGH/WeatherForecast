@@ -13,9 +13,8 @@ import com.example.data.entity.Coordinates
 import com.example.data.entity.dbentity.FavoritesDbEntity
 import com.example.weatherforecast.R
 import com.example.weatherforecast.SideEffect
-import com.example.weatherforecast.entity.WeatherState
+import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.mappers.toWeatherState
-import com.example.weatherforecast.safeLaunchAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -4,8 +4,8 @@ import com.example.data.entity.Coordinates
 import com.example.data.entity.dbentity.WeatherDbEntity
 import com.example.weatherforecast.FORMAT_EEE_HH_mm
 import com.example.weatherforecast.FORMAT_EEE_d_MMMM_HH_mm
-import com.example.weatherforecast.entity.WeatherState
-import com.example.weatherforecast.entity.WeatherType
+import com.example.weatherforecast.model.WeatherState
+import com.example.weatherforecast.model.WeatherType
 import com.example.weatherforecast.format
 import kotlin.math.roundToInt
 

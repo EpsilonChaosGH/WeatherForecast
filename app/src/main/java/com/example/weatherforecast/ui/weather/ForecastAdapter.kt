@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherforecast.databinding.ItemForecastBinding
-import com.example.weatherforecast.entity.ForecastState
+import com.example.weatherforecast.model.ForecastState
 
 class ForecastDiffCallback(
     private val oldList: List<ForecastState>,

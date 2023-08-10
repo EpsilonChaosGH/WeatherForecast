@@ -1,8 +1,8 @@
 package com.example.weatherforecast.mappers
 
 import com.example.data.entity.ForecastEntity
-import com.example.weatherforecast.entity.ForecastState
-import com.example.weatherforecast.entity.WeatherType
+import com.example.weatherforecast.model.ForecastState
+import com.example.weatherforecast.model.WeatherType
 import com.example.weatherforecast.format
 import kotlin.math.roundToInt
 

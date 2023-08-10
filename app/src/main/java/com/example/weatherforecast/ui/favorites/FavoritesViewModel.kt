@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.FavoritesRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
-import com.example.data.entity.Coordinates
-import com.example.weatherforecast.entity.FavoritesState
+import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
 import com.example.weatherforecast.mappers.toFavoritesState
 import dagger.hilt.android.lifecycle.HiltViewModel

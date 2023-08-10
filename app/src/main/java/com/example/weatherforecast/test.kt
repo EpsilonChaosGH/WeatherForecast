@@ -1,34 +1,69 @@
 package com.example.weatherforecast
 
-import kotlin.random.Random
+@Volatile
+var sharedCounter: Int = 0
 
-
-fun main() {
-    val maxRange = 1000000
-    var max = 0
-    val list = (1..maxRange).toMutableList()
-
-    for (i in 1..100) {
-        val x = binarySearch(list, Random.nextInt(maxRange))
-        println(x)
-        if (x > max) max = x
+class TestT{
+    @Synchronized
+    fun work(test: TestT){
+        Thread.sleep(1000)
+        println(this)
+        test.work2(this)
+        println("asd")
     }
-    println(max)
+
+    @Synchronized
+    private fun work2(test: TestT){
+        println(test)
+    }
 }
 
-fun binarySearch(list: List<Int>, item: Int): Int {
-    var start = 0
-    var end = list.size - 1
-    var middle: Int
-    var counter = 0
+fun main() {
 
-    while (start <= end) {
-        counter++
-        middle = (start + end) / 2
-        if (list[middle] == item) return counter
-        if (list[middle] > item) end = middle - 1
-        else start = middle + 1
+    val a = TestT()
+    val b = TestT()
+
+    Thread{
+        a.work(b)
+    }.apply {
+        start()
     }
-    return -1
+
+    Thread{
+        b.work(a)
+    }.apply {
+        start()
+        join()
+    }
+
+
+
+//    runBlocking {
+//       // var counter: AtomicInteger = AtomicInteger(0)
+//        var counter: Int = 0
+//
+//        @Synchronized
+//        fun count(){
+//            counter++
+//        }
+//
+//        val scope = CoroutineScope(newFixedThreadPoolContext(4,"pool"))
+//
+//        var coroutines = 1.rangeTo(1000).map {
+//            scope.launch {
+//                for (i in 1..1000){
+//                    count()
+//                    sharedCounter++
+//                }
+//            }
+//        }
+//
+//        coroutines.forEach { it.join() }
+//
+//        println(counter)
+//        println(sharedCounter)
+//
+//
+//    }
 }
 

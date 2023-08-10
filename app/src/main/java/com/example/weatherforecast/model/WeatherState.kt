@@ -1,4 +1,4 @@
-package com.example.weatherforecast.entity
+package com.example.weatherforecast.model
 
 import com.example.data.entity.Coordinates
 
