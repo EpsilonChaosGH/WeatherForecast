@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -18,9 +20,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -30,8 +32,10 @@ import com.example.weatherforecast.R
 import com.example.weatherforecast.collectEventFlow
 import com.example.weatherforecast.collectFlow
 import com.example.weatherforecast.databinding.FragmentWeatherBinding
-import com.example.weatherforecast.entity.AirState
+import com.example.weatherforecast.model.AirState
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -92,9 +96,16 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         })
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun observeEvents() {
         collectEventFlow(viewModel.showMessageResEvent) { massage ->
-            Toast.makeText(requireContext(), massage, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireContext(), massage, Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, massage,Snackbar.LENGTH_SHORT)
+                .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
+                .setBackgroundTint(R.color.main_color)
+                .setAction("OK"){
+                    Toast.makeText(requireContext(), "OK", Toast.LENGTH_SHORT).show()
+                }.show()
         }
     }
 

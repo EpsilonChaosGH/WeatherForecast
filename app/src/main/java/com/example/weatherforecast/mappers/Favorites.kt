@@ -2,9 +2,9 @@ package com.example.weatherforecast.mappers
 
 import com.example.data.entity.FavoritesEntity
 import com.example.weatherforecast.FORMAT_EEE_d_MMMM_HH_mm
-import com.example.weatherforecast.entity.FavoritesItem
-import com.example.weatherforecast.entity.FavoritesState
-import com.example.weatherforecast.entity.WeatherType
+import com.example.weatherforecast.model.FavoritesItem
+import com.example.weatherforecast.model.FavoritesState
+import com.example.weatherforecast.model.WeatherType
 import com.example.weatherforecast.format
 import kotlin.math.roundToInt
 

@@ -5,9 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entity.City
-import com.example.data.entity.Coordinates
 import com.example.weatherforecast.databinding.ItemFavoriteBinding
-import com.example.weatherforecast.entity.FavoritesItem
+import com.example.weatherforecast.model.FavoritesItem
 
 interface FavoritesListener {
     fun delete(id: Long)

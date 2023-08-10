@@ -1,4 +1,4 @@
-package com.example.weatherforecast.entity
+package com.example.weatherforecast.model
 
 data class FavoritesItem(
     val cityId: Long,
