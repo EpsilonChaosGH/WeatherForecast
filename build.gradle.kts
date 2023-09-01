@@ -2,7 +2,7 @@ buildscript {
 
     val hiltVersion = "2.47"
     val kotlinVersion = "1.8.0"
-    val gradleVersion = "8.1.0"
+    val gradleVersion = "8.1.1"
 
     repositories {
         google()
