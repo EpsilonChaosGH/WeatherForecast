@@ -11,6 +11,13 @@ object AndroidX {
     const val ktxCore = "androidx.core:core-ktx:${Versions.ktxCore}"
 
     /**
+     * [Data Store](https://developer.android.com/topic/libraries/architecture/datastore#kts)
+     * Jetpack DataStore is a data storage solution that allows you to store key-value pairs
+     * or typed objects with protocol buffers.
+     */
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStore}"
+
+    /**
      * [Fragment ktx](https://developer.android.com/jetpack/androidx/releases/fragment)
      */
     const val ktxFragment = "androidx.fragment:fragment-ktx:${Versions.ktxFragment}"

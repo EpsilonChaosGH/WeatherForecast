@@ -9,4 +9,8 @@
         android:id="@id/favorites_graph"
         android:icon="@drawable/ic_baseline_favorite_border_24"
         android:title="@string/menu_favorites" />
+    <item
+        android:id="@id/settings_graph"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/menu_settings" />
 </menu>

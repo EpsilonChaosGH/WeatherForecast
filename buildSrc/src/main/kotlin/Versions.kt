@@ -18,6 +18,7 @@ object Versions {
 
     //androidX
     const val ktxCore = "1.10.1"
+    const val dataStore = "1.0.0"
     const val ktxActivity = "1.7.2"
     const val ktxFragment = "1.5.7"
     const val appcompat = "1.6.1"
