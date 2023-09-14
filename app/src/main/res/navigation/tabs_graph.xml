@@ -6,5 +6,6 @@
 
     <include app:graph="@navigation/weather_graph" />
     <include app:graph="@navigation/favorites_graph" />
+    <include app:graph="@navigation/settings_graph" />
 
 </navigation>

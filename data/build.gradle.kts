@@ -43,6 +43,10 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.21")
 
+    dep.androidX.apply {
+        implementation(dataStore)
+    }
+
     dep.hilt.apply { // https://dagger.dev/hilt/
         implementation(hiltAndroid)
         kapt(daggerHiltCompiler)
