@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages_array">
+        <item>Afrikaans</item>
+        <item>Albanian</item>
+        <item>Arabic</item>
+        <item>Azerbaijani</item>
+        <item>Bulgarian</item>
+        <item>Catalan</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>English</item>
+        <item>Basque</item>
+        <item>Persian</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>Galician</item>
+        <item>Hebrew</item>
+        <item>Hindi</item>
+        <item>Croatian</item>
+        <item>Hungarian</item>
+        <item>Indonesian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Latvian</item>
+        <item>Lithuanian</item>
+        <item>Macedonian</item>
+        <item>Norwegian</item>
+        <item>Dutch</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Português</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Swedish</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Spanish</item>
+        <item>Serbian</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Vietnamese</item>
+        <item>Chinese</item>
+        <item>Chinese</item>
+        <item>Zulu</item>
+    </string-array>
+</resources>
