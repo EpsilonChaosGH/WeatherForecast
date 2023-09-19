@@ -32,7 +32,7 @@
                     android:text="Language" />
 
                 <Spinner
-                    android:id="@+id/languageSpinner"
+                    android:id="@+id/langSpinner"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/medium_space"

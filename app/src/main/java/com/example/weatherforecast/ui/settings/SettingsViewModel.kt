@@ -25,32 +25,32 @@ class SettingsViewModel @Inject constructor(
         listenSettings()
     }
 
-    fun setLanguage(language: String) {
-        viewModelScope.launch {
-            settingsRepository.setLanguage(language)
-        }
-    }
-
     private fun getLanguageValue(language: String) =
         SupportedLanguage.values().first { it.languageName == language }.languageValue
 
-    fun setUnits(units: String) {
+    fun setLanguageIndex(languageIndex: Int) {
         viewModelScope.launch {
-            settingsRepository.setUnits(units)
+            settingsRepository.setLanguageIndex(languageIndex)
+        }
+    }
+
+    fun setUnitsIndex(unitsIndex: Int) {
+        viewModelScope.launch {
+            settingsRepository.setUnitsIndex(unitsIndex)
         }
     }
 
     private fun listenSettings() {
         viewModelScope.launch {
             combine(
-                settingsRepository.getLanguage(),
-                settingsRepository.getUnits()
+                settingsRepository.getLanguageIndex(),
+                settingsRepository.getUnitsIndex()
             ) { language, units ->
                 Pair(language, units)
             }.collect { (language, units) ->
                 _state.value = _state.value.copy(
-                    selectedLanguage = language,
-                    selectedUnit = units,
+                    selectedLanguageIndex = language,
+                    selectedUnitIndex = units,
                     versionInfo = settingsRepository.getAppVersion(),
                     availableLanguages = settingsRepository.getAvailableLanguages(),
                     availableUnits = settingsRepository.getAvailableUnits()

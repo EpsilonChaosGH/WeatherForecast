@@ -28,10 +28,13 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     @WorkerThread
-    override suspend fun loadWeatherByCoordinates(coordinates: Coordinates) =
+    override suspend fun loadWeatherByCoordinates(coordinates: Coordinates, units: String, language: String) =
         wrapBackendExceptions {
             val weather = currentWeatherService.getCurrentWeatherByCoordinates(
-                lat = coordinates.lat, lon = coordinates.lon
+                lat = coordinates.lat,
+                lon = coordinates.lon,
+                units = units,
+                language = language
             ).getResult()
             val forecast = forecastService.getForecastByCoordinate(
                 lat = coordinates.lat, lon = coordinates.lon
@@ -52,9 +55,13 @@ class WeatherRepositoryImpl @Inject constructor(
         }
 
     @WorkerThread
-    override suspend fun loadWeatherByCity(city: City) = wrapBackendExceptions {
+    override suspend fun loadWeatherByCity(city: City, units: String, language: String) = wrapBackendExceptions {
 
-        val weather = currentWeatherService.getCurrentWeatherByCity(city.city).getResult()
+        val weather = currentWeatherService.getCurrentWeatherByCity(
+            city = city.city,
+            units = units,
+            language = language
+        ).getResult()
         val forecast = forecastService.getForecastByCity(city.city).getResult()
         val air = airService.getAirByCoordinate(
             lat = weather.coord.lat.toString(), lon = weather.coord.lon.toString()

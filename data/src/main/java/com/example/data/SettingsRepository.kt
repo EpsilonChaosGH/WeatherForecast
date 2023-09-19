@@ -3,13 +3,17 @@ package com.example.data
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
-    suspend fun setLanguage(language: String)
+    suspend fun setLanguageIndex(language: Int)
 
-    suspend fun getLanguage(): Flow<String>
+    suspend fun getLanguageIndex(): Flow<Int>
 
-    suspend fun setUnits(units: String)
+    suspend fun getLanguage(): String
 
-    suspend fun getUnits(): Flow<String>
+    suspend fun setUnitsIndex(units: Int)
+
+    suspend fun getUnitsIndex(): Flow<Int>
+
+    suspend fun getUnits(): String
 
     fun getAppVersion(): String
 

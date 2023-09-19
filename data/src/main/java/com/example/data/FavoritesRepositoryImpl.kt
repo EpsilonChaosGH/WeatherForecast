@@ -36,11 +36,15 @@ class FavoritesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun refreshFavorites(): List<FavoritesEntity> = withContext(Dispatchers.IO) {
+    override suspend fun refreshFavorites(units: String, language: String): List<FavoritesEntity> = withContext(Dispatchers.IO) {
         val favoritesList = mutableListOf<FavoritesEntity>()
         appDatabase.favoritesDao().getFavorites()?.map {
             async {
-                weatherService.getCurrentWeatherByCity(it.city).getResult()
+                weatherService.getCurrentWeatherByCity(
+                    city = it.city,
+                    units = units,
+                    language = language
+                ).getResult()
             }
         }?.awaitAll()?.forEach {
             favoritesList.add(it.toFavoritesEntity())

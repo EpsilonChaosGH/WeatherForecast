@@ -10,5 +10,6 @@ object Const {
     const val UNITS_METRIC = "metric"
     const val WEATHER_KEY = "WEATHER_KEY"
     const val LANG_RU = "ru"
+    const val LANG_EN = "en"
     const val CNT = "24"
 }
