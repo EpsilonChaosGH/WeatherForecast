@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,57 +14,63 @@ import com.example.weatherforecast.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment(): Fragment(R.layout.fragment_settings) {
+class SettingsFragment() : Fragment(R.layout.fragment_settings) {
 
-    val binding by viewBinding(FragmentSettingsBinding::class.java)
+    private val binding by viewBinding(FragmentSettingsBinding::class.java)
 
     val viewModel by viewModels<SettingsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val languageSpinner: Spinner = binding.languageSpinner
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.languages_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            languageSpinner.adapter = adapter
+            binding.langSpinner.adapter = adapter
         }
 
-        val unitsSpinner: Spinner = binding.unitsSpinner
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.units_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            unitsSpinner.adapter = adapter
+            binding.unitsSpinner.adapter = adapter
         }
 
-        languageSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-
+        binding.langSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-
-                Toast.makeText(requireContext(), id.toString(), Toast.LENGTH_SHORT).show()
+                if (viewModel.state.value.selectedLanguageIndex != pos) {
+                    Toast.makeText(requireContext(), pos.toString(), Toast.LENGTH_SHORT).show()
+                    viewModel.setLanguageIndex(pos)
+                }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Another interface callback
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        binding.unitsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                if (viewModel.state.value.selectedUnitIndex != pos) {
+                    Toast.makeText(requireContext(), pos.toString(), Toast.LENGTH_SHORT).show()
+                    viewModel.setUnitsIndex(pos)
+                }
             }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
         observeSettingsState()
     }
 
-
     private fun observeSettingsState() = with(binding) {
         collectFlow(viewModel.state) { state ->
-
+            langSpinner.setSelection(state.selectedLanguageIndex)
+            unitsSpinner.setSelection(state.selectedUnitIndex)
+            versionTextView.text = state.versionInfo
         }
     }
-
-
 }

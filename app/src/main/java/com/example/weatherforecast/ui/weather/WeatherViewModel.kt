@@ -7,6 +7,7 @@ import com.example.data.ConnectionException
 import com.example.data.FavoritesRepository
 import com.example.data.InvalidApiKeyException
 import com.example.data.RequestRateLimitException
+import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
 import com.example.data.entity.Coordinates
@@ -28,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesRepository: FavoritesRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _showMessageResEvent = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
@@ -39,8 +41,17 @@ class WeatherViewModel @Inject constructor(
 
     init {
         listenWeather()
+        test()
     }
 
+    fun test(){
+        viewModelScope.launch {
+            settingsRepository.getLanguageIndex().collect(){
+
+                refreshWeather()
+            }
+        }
+    }
     fun showMessage(messageRes: Int) {
         _showMessageResEvent.value = SideEffect(messageRes)
     }
@@ -53,7 +64,9 @@ class WeatherViewModel @Inject constructor(
                     Coordinates(
                         lat = state.coordinates.lat,
                         lon = state.coordinates.lon,
-                    )
+                    ),
+                    units = settingsRepository.getUnits(),
+                    language = settingsRepository.getLanguage()
                 )
             }
         }
@@ -62,14 +75,22 @@ class WeatherViewModel @Inject constructor(
     fun getWeatherByCity(city: City) {
         saveLaunch {
             setLoading(true)
-            weatherRepository.loadWeatherByCity(city)
+            weatherRepository.loadWeatherByCity(
+                city = city,
+                units = settingsRepository.getUnits(),
+                language = settingsRepository.getLanguage()
+                )
         }
     }
 
     fun getWeatherByCoordinates(coordinates: Coordinates) {
         saveLaunch {
             setLoading(true)
-            weatherRepository.loadWeatherByCoordinates(coordinates)
+            weatherRepository.loadWeatherByCoordinates(
+                coordinates = coordinates,
+                units = settingsRepository.getUnits(),
+                language = settingsRepository.getLanguage()
+                )
         }
     }
 
