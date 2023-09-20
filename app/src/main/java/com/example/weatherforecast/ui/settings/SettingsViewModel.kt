@@ -3,7 +3,7 @@ package com.example.weatherforecast.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.SettingsRepository
-import com.example.data.SupportedLanguage
+import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,8 +52,6 @@ class SettingsViewModel @Inject constructor(
                     selectedLanguageIndex = language,
                     selectedUnitIndex = units,
                     versionInfo = settingsRepository.getAppVersion(),
-                    availableLanguages = settingsRepository.getAvailableLanguages(),
-                    availableUnits = settingsRepository.getAvailableUnits()
                 )
             }
         }

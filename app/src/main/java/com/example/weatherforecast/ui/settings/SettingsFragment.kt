@@ -3,14 +3,15 @@ package com.example.weatherforecast.ui.settings
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.R
 import com.example.weatherforecast.collectFlow
 import com.example.weatherforecast.databinding.FragmentSettingsBinding
+import com.example.weatherforecast.model.Units
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,21 +24,11 @@ class SettingsFragment() : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.languages_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        SettingSpinnerAdapter(requireContext(), SupportedLanguage.getLanguageSpinnerItem()).also { adapter ->
             binding.langSpinner.adapter = adapter
         }
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.units_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        SettingSpinnerAdapter(requireContext(), Units.getUnitsSpinnerItem()).also { adapter ->
             binding.unitsSpinner.adapter = adapter
         }
 
