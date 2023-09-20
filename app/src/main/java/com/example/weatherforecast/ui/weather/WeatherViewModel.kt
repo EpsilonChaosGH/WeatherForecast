@@ -16,11 +16,14 @@ import com.example.weatherforecast.R
 import com.example.weatherforecast.SideEffect
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.mappers.toWeatherState
+import com.example.weatherforecast.model.SupportedLanguage
+import com.example.weatherforecast.model.Units
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -44,14 +47,15 @@ class WeatherViewModel @Inject constructor(
         test()
     }
 
-    fun test(){
+    fun test() {
         viewModelScope.launch {
-            settingsRepository.getLanguageIndex().collect(){
+            settingsRepository.getLanguageIndex().collect() {
 
                 refreshWeather()
             }
         }
     }
+
     fun showMessage(messageRes: Int) {
         _showMessageResEvent.value = SideEffect(messageRes)
     }
@@ -65,8 +69,9 @@ class WeatherViewModel @Inject constructor(
                         lat = state.coordinates.lat,
                         lon = state.coordinates.lon,
                     ),
-                    units = settingsRepository.getUnits(),
-                    language = settingsRepository.getLanguage()
+                    units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
+                    language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
+                        .first()].languageValue
                 )
             }
         }
@@ -77,9 +82,10 @@ class WeatherViewModel @Inject constructor(
             setLoading(true)
             weatherRepository.loadWeatherByCity(
                 city = city,
-                units = settingsRepository.getUnits(),
-                language = settingsRepository.getLanguage()
-                )
+                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
+                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
+                    .first()].languageValue
+            )
         }
     }
 
@@ -88,9 +94,10 @@ class WeatherViewModel @Inject constructor(
             setLoading(true)
             weatherRepository.loadWeatherByCoordinates(
                 coordinates = coordinates,
-                units = settingsRepository.getUnits(),
-                language = settingsRepository.getLanguage()
-                )
+                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
+                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
+                    .first()].languageValue
+            )
         }
     }
 

@@ -9,10 +9,13 @@ import com.example.data.entity.City
 import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
 import com.example.weatherforecast.mappers.toFavoritesState
+import com.example.weatherforecast.model.SupportedLanguage
+import com.example.weatherforecast.model.Units
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,8 +39,9 @@ class FavoritesViewModel @Inject constructor(
             _state.value = _state.value?.copy(isRefreshing = true)
             _state.value =
                 FavoritesState(favoritesRepository.refreshFavorites(
-                    units = settingsRepository.getUnits(),
-                    language = settingsRepository.getLanguage()
+                    units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
+                    language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
+                        .first()].languageValue
                 ).map { it.toFavoritesItem() })
         }
     }
@@ -52,8 +56,9 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             weatherRepository.loadWeatherByCity(
                 city = city,
-                units = settingsRepository.getUnits(),
-                language = settingsRepository.getLanguage()
+                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
+                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
+                    .first()].languageValue
             )
         }
     }
