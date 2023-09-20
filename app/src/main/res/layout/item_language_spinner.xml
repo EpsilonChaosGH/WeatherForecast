@@ -2,21 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start|center"
+    android:gravity="end|center"
+    android:padding="@dimen/low_space"
     android:background="@color/main_secondary_color"
     android:orientation="horizontal" >
 
-    <ImageView
-        style="@style/WeatherIconImageView"
-        android:id="@+id/languageItemIcon"
-        android:src="@drawable/ic_language" />
 
     <TextView
         android:layout_marginStart="6dp"
         android:id="@+id/languageItemTextView"
         android:textColor="@color/main_text_color"
         android:layout_width="wrap_content"
+        android:gravity="start"
         android:text="Language"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        style="@style/WeatherIconImageView"
+        android:id="@+id/languageItemIcon"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_language" />
 
 </LinearLayout>
