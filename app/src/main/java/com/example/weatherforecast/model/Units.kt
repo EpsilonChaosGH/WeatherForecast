@@ -4,9 +4,9 @@ import androidx.annotation.DrawableRes
 import com.example.weatherforecast.R
 
 enum class Units(val tempLabel: String, @DrawableRes val iconResId: Int, val value: String) {
-    STANDARD("°F", R.drawable.ic_baseline_favorite_border_24, "standard"),
-    METRIC("°C", R.drawable.ic_baseline_favorite_border_24, "metric"),
-    IMPERIAL("°F", R.drawable.ic_baseline_favorite_border_24, "imperial");
+    STANDARD("Kelvin", R.drawable.ic_kelvin, "standard"),
+    METRIC("Celsius", R.drawable.ic_celsius, "metric"),
+    IMPERIAL("Fahrenheit", R.drawable.ic_fahrenheit, "imperial");
 
     companion object {
         fun getUnitsSpinnerItem(): Array<SpinnerItem> {
@@ -16,3 +16,5 @@ enum class Units(val tempLabel: String, @DrawableRes val iconResId: Int, val val
         }
     }
 }
+
+//"°C °F"
