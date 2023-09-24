@@ -11,8 +11,8 @@ import com.example.weatherforecast.R
 import com.example.weatherforecast.model.SpinnerItem
 
 
-class SettingSpinnerAdapter(context: Context,var items : Array<SpinnerItem>)
-    : ArrayAdapter<SpinnerItem>(context, 0, items) {
+class SettingSpinnerAdapter(context: Context, var items: Array<SpinnerItem>) :
+    ArrayAdapter<SpinnerItem>(context, 0, items) {
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getCustomView(position, convertView, parent)
@@ -22,7 +22,7 @@ class SettingSpinnerAdapter(context: Context,var items : Array<SpinnerItem>)
         return getCustomView(position, convertView, parent)
     }
 
-    private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View{
+    private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.item_language_spinner, parent, false)
 

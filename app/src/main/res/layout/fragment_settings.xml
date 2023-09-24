@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_color"
@@ -30,7 +31,7 @@
                 <TextView
                     android:id="@+id/languageTextView"
                     style="@style/TitleSettingsTextView"
-                    android:text="Language" />
+                    android:text="@string/language" />
 
                 <Spinner
                     android:id="@+id/langSpinner"
@@ -53,7 +54,7 @@
                 <TextView
                     android:id="@+id/unitsTextView"
                     style="@style/TitleSettingsTextView"
-                    android:text="Units" />
+                    android:text="@string/units" />
 
                 <Spinner
                     android:id="@+id/unitsSpinner"
@@ -63,9 +64,7 @@
                     android:layout_weight="1"
                     android:gravity="center|end" />
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
     <TextView
@@ -74,5 +73,5 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="VERSION" />
+        tools:text="VERSION" />
 </LinearLayout>
