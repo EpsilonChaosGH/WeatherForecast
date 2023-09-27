@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.source.services.AirService
-import com.example.data.source.services.ForecastService
-import com.example.data.source.services.CurrentWeatherService
+import com.example.data.source.network.services.AirService
+import com.example.data.source.network.services.ForecastService
+import com.example.data.source.network.services.CurrentWeatherService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

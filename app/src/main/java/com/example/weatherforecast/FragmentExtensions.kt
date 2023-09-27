@@ -18,15 +18,3 @@ fun <T> Fragment.collectFlow(flow: Flow<T?>, onCollect: (T) -> Unit) {
         }
     }
 }
-
-fun <T> Fragment.collectEventFlow(flow: Flow<SideEffect<T?>>, onCollect: (T) -> Unit) {
-    viewLifecycleOwner.lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.collect { value ->
-                value.get()?.let { event ->
-                    onCollect(event)
-                }
-            }
-        }
-    }
-}

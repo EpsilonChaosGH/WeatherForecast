@@ -1,7 +1,7 @@
 package com.example.data.mappers
 
 import com.example.data.entity.ForecastEntity
-import com.example.data.entity.response.ForecastResponse
+import com.example.data.source.network.response.ForecastResponse
 
 internal fun ForecastResponse.toForecastList(): List<ForecastEntity> {
     val forecastList = mutableListOf<ForecastEntity>()

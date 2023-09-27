@@ -2,30 +2,31 @@ package com.example.weatherforecast.ui.weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.CityNotFoundException
-import com.example.data.ConnectionException
+import com.example.data.utils.CityNotFoundException
+import com.example.data.utils.ConnectionException
 import com.example.data.FavoritesRepository
-import com.example.data.InvalidApiKeyException
-import com.example.data.RequestRateLimitException
+import com.example.data.utils.InvalidApiKeyException
+import com.example.data.utils.RequestRateLimitException
 import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
 import com.example.data.entity.Coordinates
-import com.example.data.entity.dbentity.FavoritesDbEntity
+import com.example.data.source.local.entity.FavoritesDbEntity
 import com.example.weatherforecast.R
-import com.example.weatherforecast.SideEffect
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.mappers.toWeatherState
+import com.example.data.entity.SettingsState
+import com.example.weatherforecast.SideEffect
+import com.example.weatherforecast.WhileUiSubscribed
 import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,74 +37,79 @@ class WeatherViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
-    private val _showMessageResEvent = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
-    val showMessageResEvent = _showMessageResEvent.asStateFlow()
+    private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
+    private val _isLoading = MutableStateFlow(false)
+    private val _emptyCityError = MutableStateFlow(false)
 
-    private val _state = MutableStateFlow<WeatherState?>(null)
-    val state: StateFlow<WeatherState?> = _state.asStateFlow()
-
-    init {
-        listenWeather()
-        test()
-    }
-
-    fun test() {
-        viewModelScope.launch {
-            settingsRepository.getLanguageIndex().collect() {
-
-                refreshWeather()
-            }
-        }
-    }
+    val uiState: StateFlow<WeatherState?> = combine(
+        weatherRepository.getWeatherFlow(),
+        settingsRepository.getSettingsFlow(),
+        _userMessage,
+        _isLoading,
+        _emptyCityError
+    ) { weather, settings, userMessage, isLoading, emptyCityError ->
+        weather?.toWeatherState(
+            settings,
+            userMessage,
+            isLoading,
+            emptyCityError
+        )?.let { return@let it }
+    }.stateIn(
+        viewModelScope,
+        WhileUiSubscribed,
+        null
+    )
 
     fun showMessage(messageRes: Int) {
-        _showMessageResEvent.value = SideEffect(messageRes)
+        _userMessage.value =SideEffect(messageRes)
     }
 
     fun refreshWeather() {
-        saveLaunch {
-            setRefreshing(true)
-            _state.value?.let { state ->
+        safeLaunch {
+            setLoading(true)
+            uiState.value?.let { state ->
                 weatherRepository.loadWeatherByCoordinates(
                     Coordinates(
                         lat = state.coordinates.lat,
                         lon = state.coordinates.lon,
                     ),
-                    units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
-                    language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
-                        .first()].languageValue
+                    units = Units.values()[state.settingsState.selectedUnitIndex].value,
+                    language = SupportedLanguage.values()[state.settingsState.selectedLanguageIndex].languageValue
                 )
             }
+            setLoading(false)
         }
     }
 
     fun getWeatherByCity(city: City) {
-        saveLaunch {
+        safeLaunch {
             setLoading(true)
+            val settings = settingsRepository.getSettingsFlow().first()
             weatherRepository.loadWeatherByCity(
                 city = city,
-                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
-                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
-                    .first()].languageValue
+                units = Units.values()[settings.selectedUnitIndex].value,
+                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
             )
+            setLoading(false)
         }
     }
 
     fun getWeatherByCoordinates(coordinates: Coordinates) {
-        saveLaunch {
+        safeLaunch {
             setLoading(true)
+            val settings = settingsRepository.getSettingsFlow().first()
             weatherRepository.loadWeatherByCoordinates(
                 coordinates = coordinates,
-                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
-                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
-                    .first()].languageValue
+                units = Units.values()[settings.selectedUnitIndex].value,
+                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
             )
+            setLoading(false)
         }
     }
 
     fun addOrRemoveFromFavorite() {
         viewModelScope.launch {
-            _state.value?.let { value ->
+            uiState.value?.let { value ->
                 if (value.isFavorites) {
                     favoritesRepository.deleteFromFavoritesById(value.id)
                 } else {
@@ -121,27 +127,15 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun listenWeather() {
-        weatherRepository.getWeatherFlow().onEach { weather ->
-            weather?.toWeatherState()?.let {
-                _state.value = it
-            }
-        }.launchIn(viewModelScope)
-    }
-
     fun setEmptyFieldException(emptyCityError: Boolean) {
-        _state.value = _state.value?.copy(emptyCityError = emptyCityError)
+         _emptyCityError.value = emptyCityError
     }
 
     private fun setLoading(loading: Boolean) {
-        _state.value = _state.value?.copy(isLoading = loading)
+        _isLoading.value = loading
     }
 
-    private fun setRefreshing(refreshing: Boolean) {
-        _state.value = _state.value?.copy(isRefreshing = refreshing)
-    }
-
-    private fun saveLaunch(block: suspend CoroutineScope.() -> Unit) {
+    private fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch {
             val result: Int? = try {
                 block.invoke(this)
@@ -158,8 +152,7 @@ class WeatherViewModel @Inject constructor(
                 R.string.error_internal
             }
             if (result != null) {
-                _showMessageResEvent.value = SideEffect(result)
-                setRefreshing(false)
+                showMessage(result)
                 setLoading(false)
             }
         }

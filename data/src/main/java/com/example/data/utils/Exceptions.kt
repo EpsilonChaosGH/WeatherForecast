@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.utils
 
 import android.database.sqlite.SQLiteException
 import kotlinx.coroutines.CoroutineDispatcher
