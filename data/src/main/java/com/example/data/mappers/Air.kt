@@ -1,7 +1,7 @@
 package com.example.data.mappers
 
-import com.example.data.entity.dbentity.AirDbEntity
-import com.example.data.entity.response.AirResponse
+import com.example.data.source.local.entity.AirDbEntity
+import com.example.data.source.network.response.AirResponse
 
 internal fun AirResponse.toAirEntity() = AirDbEntity(
     no2 = list.firstOrNull()?.components?.get("no2") ?: -1.0,

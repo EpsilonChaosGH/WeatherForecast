@@ -27,8 +27,8 @@ class FavoritesViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<FavoritesState?>(null)
-    val state: StateFlow<FavoritesState?> = _state.asStateFlow()
+    private val _state = MutableStateFlow(FavoritesState())
+    val state: StateFlow<FavoritesState> = _state.asStateFlow()
 
     init {
         listenFavorites()
@@ -36,13 +36,15 @@ class FavoritesViewModel @Inject constructor(
 
     fun refreshFavorites() {
         viewModelScope.launch {
-            _state.value = _state.value?.copy(isRefreshing = true)
-            _state.value =
-                FavoritesState(favoritesRepository.refreshFavorites(
-                    units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
-                    language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
-                        .first()].languageValue
-                ).map { it.toFavoritesItem() })
+            setState { copy(isRefreshing = true) }
+            val settings = settingsRepository.getSettingsFlow().first()
+            val favorites = favoritesRepository.refreshFavorites(
+                units = Units.values()[settings.selectedUnitIndex].value,
+                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
+            ).map { it.toFavoritesItem() }
+
+            setState { copy(favorites = favorites) }
+            setState { copy(isRefreshing = false) }
         }
     }
 
@@ -54,24 +56,32 @@ class FavoritesViewModel @Inject constructor(
 
     fun loadWeatherByCity(city: City) {
         viewModelScope.launch {
+            val settings = settingsRepository.getSettingsFlow().first()
             weatherRepository.loadWeatherByCity(
                 city = city,
-                units = Units.values()[settingsRepository.getUnitsIndex().first()].value,
-                language = SupportedLanguage.values()[settingsRepository.getLanguageIndex()
-                    .first()].languageValue
+                units = Units.values()[settings.selectedUnitIndex].value,
+                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
             )
         }
     }
 
     private fun listenFavorites() {
         viewModelScope.launch {
-            favoritesRepository.getFavoritesFlow().collect { favoritesList ->
+            val settings = settingsRepository.getSettingsFlow().first()
+            favoritesRepository.getFavoritesFlow(
+                units = Units.values()[settings.selectedUnitIndex].value,
+                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
+            ).collect { favoritesList ->
                 if (!favoritesList.isNullOrEmpty()) {
-                    _state.value = favoritesList.toFavoritesState()
+                    setState { favoritesList.toFavoritesState() }
                 } else {
-                    _state.value = _state.value?.copy(emptyListState = true)
+                    setState { copy(emptyListState = true) }
                 }
             }
         }
+    }
+
+    private suspend fun setState(stateReducer: FavoritesState.() -> FavoritesState) {
+        _state.emit(stateReducer(state.value))
     }
 }

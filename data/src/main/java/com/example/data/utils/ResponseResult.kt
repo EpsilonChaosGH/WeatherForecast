@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.utils
 
 import android.content.res.Resources.NotFoundException
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.data.source.db
+package com.example.data.source.local
 
 import androidx.room.TypeConverter
 import com.example.data.entity.ForecastEntity

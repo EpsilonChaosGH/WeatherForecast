@@ -1,4 +1,4 @@
-package com.example.weatherforecast.model
+package com.example.data.entity
 
 data class SettingsState(
     val selectedUnitIndex: Int = 0,

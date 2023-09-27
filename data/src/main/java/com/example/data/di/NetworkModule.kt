@@ -1,6 +1,6 @@
 package com.example.data.di
 
-import com.example.data.Const
+import com.example.data.utils.Const
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

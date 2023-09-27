@@ -1,4 +1,4 @@
-package com.example.data.entity.dbentity
+package com.example.data.source.local.entity
 
 import androidx.room.*
 import com.example.data.entity.ForecastEntity

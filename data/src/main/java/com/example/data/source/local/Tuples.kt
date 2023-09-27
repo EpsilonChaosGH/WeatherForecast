@@ -1,7 +1,6 @@
-package com.example.data.source.db
+package com.example.data.source.local
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.PrimaryKey
 
 data class UpdateFavoritesTuple(

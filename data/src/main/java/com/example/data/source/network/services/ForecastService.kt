@@ -1,7 +1,7 @@
-package com.example.data.source.services
+package com.example.data.source.network.services
 
-import com.example.data.Const
-import com.example.data.entity.response.ForecastResponse
+import com.example.data.utils.Const
+import com.example.data.source.network.response.ForecastResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

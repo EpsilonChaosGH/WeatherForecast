@@ -2,9 +2,9 @@ package com.example.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.data.source.db.AppDatabase
-import com.example.data.source.db.FavoritesDao
-import com.example.data.source.db.WeatherDao
+import com.example.data.source.local.AppDatabase
+import com.example.data.source.local.dao.FavoritesDao
+import com.example.data.source.local.dao.WeatherDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

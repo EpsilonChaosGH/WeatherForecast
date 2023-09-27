@@ -1,4 +1,4 @@
-package com.example.data.entity.response
+package com.example.data.source.network.response
 
 import com.squareup.moshi.Json
 

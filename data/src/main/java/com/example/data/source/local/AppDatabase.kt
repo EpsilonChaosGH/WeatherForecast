@@ -1,10 +1,12 @@
-package com.example.data.source.db
+package com.example.data.source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.data.entity.dbentity.FavoritesDbEntity
-import com.example.data.entity.dbentity.WeatherDbEntity
+import com.example.data.source.local.entity.FavoritesDbEntity
+import com.example.data.source.local.entity.WeatherDbEntity
+import com.example.data.source.local.dao.FavoritesDao
+import com.example.data.source.local.dao.WeatherDao
 
 @Database(
     entities = [

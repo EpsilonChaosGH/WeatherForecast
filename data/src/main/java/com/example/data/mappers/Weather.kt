@@ -1,12 +1,13 @@
 package com.example.data.mappers
 
-import com.example.data.Const
+import com.example.data.utils.Const
 import com.example.data.entity.Coordinates
 import com.example.data.entity.FavoritesEntity
-import com.example.data.entity.response.CurrentWeatherResponse
+import com.example.data.source.network.response.CurrentWeatherResponse
 import com.example.data.entity.ForecastEntity
-import com.example.data.entity.dbentity.AirDbEntity
-import com.example.data.entity.dbentity.WeatherDbEntity
+import com.example.data.entity.WeatherEntity
+import com.example.data.source.local.entity.AirDbEntity
+import com.example.data.source.local.entity.WeatherDbEntity
 
 
 internal fun CurrentWeatherResponse.toWeatherDbEntity(
@@ -51,4 +52,24 @@ internal fun CurrentWeatherResponse.toFavoritesEntity() = FavoritesEntity(
         lat = coord.lat.toString(),
         lon = coord.lon.toString()
     )
+)
+
+internal fun WeatherDbEntity.toWeatherEntity() = WeatherEntity(
+    isFavorites = isFavorites,
+    id = id,
+    lon = lon,
+    lat = lat,
+    city = city,
+    country = country,
+    temperature = temperature,
+    icon = icon,
+    description = description,
+    feelsLike = feelsLike,
+    humidity = humidity,
+    pressure = pressure,
+    windSpeed = windSpeed,
+    data = data,
+    timezone = timezone,
+    forecast = forecast,
+    air = air
 )

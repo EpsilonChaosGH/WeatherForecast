@@ -81,4 +81,6 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_settings">Settings</string>
     <string name="favorites_list_is_empty">Favorites list is empty</string>
+    <string name="language">Language</string>
+    <string name="units">Units</string>
 </resources>
