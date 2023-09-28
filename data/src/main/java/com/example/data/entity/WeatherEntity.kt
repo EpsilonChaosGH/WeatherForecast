@@ -2,7 +2,6 @@ package com.example.data.entity
 
 import com.example.data.source.local.entity.AirDbEntity
 
-
 data class WeatherEntity(
     val isFavorites: Boolean,
     val id: Long,

@@ -8,7 +8,6 @@ import com.example.weatherforecast.model.WeatherType
 import com.example.weatherforecast.format
 import kotlin.math.roundToInt
 
-
 internal fun List<FavoritesEntity>.toFavoritesState() =
     FavoritesState(this.map { it.toFavoritesItem() })
 

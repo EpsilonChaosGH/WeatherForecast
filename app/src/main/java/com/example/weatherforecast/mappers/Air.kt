@@ -6,7 +6,6 @@ import com.example.weatherforecast.model.AirQuality
 import com.example.weatherforecast.model.AirState
 import kotlin.math.roundToInt
 
-
 fun AirDbEntity.toAirState() = AirState(
     no2 = "${no2.roundToInt()} μg/m3",
     no2Quality = checkNo2(no2),

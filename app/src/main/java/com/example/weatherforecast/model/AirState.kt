@@ -1,6 +1,5 @@
 package com.example.weatherforecast.model
 
-
 data class AirState(
     val no2: String,
     val no2Quality: AirQuality,
