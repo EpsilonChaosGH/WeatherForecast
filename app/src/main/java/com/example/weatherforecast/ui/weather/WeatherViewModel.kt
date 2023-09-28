@@ -15,8 +15,7 @@ import com.example.data.source.local.entity.FavoritesDbEntity
 import com.example.weatherforecast.R
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.mappers.toWeatherState
-import com.example.data.entity.SettingsState
-import com.example.weatherforecast.SideEffect
+import com.example.weatherforecast.model.SideEffect
 import com.example.weatherforecast.WhileUiSubscribed
 import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
@@ -61,7 +60,7 @@ class WeatherViewModel @Inject constructor(
     )
 
     fun showMessage(messageRes: Int) {
-        _userMessage.value =SideEffect(messageRes)
+        _userMessage.value = SideEffect(messageRes)
     }
 
     fun refreshWeather() {
@@ -128,7 +127,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun setEmptyFieldException(emptyCityError: Boolean) {
-         _emptyCityError.value = emptyCityError
+        _emptyCityError.value = emptyCityError
     }
 
     private fun setLoading(loading: Boolean) {

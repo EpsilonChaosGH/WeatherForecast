@@ -3,7 +3,6 @@ package com.example.weatherforecast.model
 import androidx.annotation.DrawableRes
 import com.example.weatherforecast.R
 
-
 enum class SupportedLanguage(
     val languageName: String,
     @DrawableRes val iconResId: Int,

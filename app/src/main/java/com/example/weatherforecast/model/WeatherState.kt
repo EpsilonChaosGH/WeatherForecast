@@ -2,8 +2,6 @@ package com.example.weatherforecast.model
 
 import com.example.data.entity.Coordinates
 import com.example.data.entity.SettingsState
-import com.example.weatherforecast.SideEffect
-
 
 data class WeatherState(
     val isFavorites: Boolean,

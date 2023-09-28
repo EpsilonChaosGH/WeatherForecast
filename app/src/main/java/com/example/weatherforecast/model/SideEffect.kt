@@ -1,5 +1,4 @@
-package com.example.weatherforecast
-
+package com.example.weatherforecast.model
 
 class SideEffect<T>(
     value: T

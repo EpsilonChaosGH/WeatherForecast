@@ -9,7 +9,6 @@ import com.example.data.entity.WeatherEntity
 import com.example.data.source.local.entity.AirDbEntity
 import com.example.data.source.local.entity.WeatherDbEntity
 
-
 internal fun CurrentWeatherResponse.toWeatherDbEntity(
     isFavorites: Boolean,
     forecast: List<ForecastEntity>,

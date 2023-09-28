@@ -2,7 +2,6 @@ package com.example.data
 
 import androidx.annotation.WorkerThread
 import com.example.data.di.DefaultDispatcher
-import com.example.data.source.local.entity.WeatherDbEntity
 import com.example.data.mappers.toAirEntity
 import com.example.data.mappers.toForecastList
 import com.example.data.mappers.toWeatherDbEntity
@@ -18,10 +17,8 @@ import com.example.data.utils.getResult
 import com.example.data.utils.wrapBackendExceptions
 import com.example.data.utils.wrapSQLiteException
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
