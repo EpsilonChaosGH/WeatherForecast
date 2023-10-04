@@ -6,7 +6,9 @@ import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.data.entity.City
 import com.example.weatherforecast.R
@@ -22,13 +24,26 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
     private val viewModel by viewModels<FavoritesViewModel>()
 
     private val adapter = FavoritesAdapter(object : FavoritesListener {
-        override fun delete(id: Long) {
-            viewModel.deleteFromFavorites(id)
-        }
+        override fun delete(id: Long) {}
 
         override fun showDetails(city: City) {
             viewModel.loadWeatherByCity(city)
             showDetails()
+        }
+    })
+
+    private val itemTouchHelper = ItemTouchHelper(object :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            viewModel.deleteFromFavorites(viewHolder.adapterPosition)
         }
     })
 
@@ -40,11 +55,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
         refreshLayout.setColorSchemeResources(R.color.main_text_color)
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.main_color)
         refreshLayout.setOnRefreshListener { viewModel.refreshFavorites() }
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
         observeFavoritesState()
     }
 
-    private fun showDetails(){
+    private fun showDetails() {
         findNavController().navigate(R.id.action_favoritesFragment_to_weather_graph)
     }
 

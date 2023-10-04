@@ -48,9 +48,9 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun deleteFromFavorites(id: Long) {
+    fun deleteFromFavorites(id: Int) {
         viewModelScope.launch {
-            favoritesRepository.deleteFromFavoritesById(id)
+            favoritesRepository.deleteFromFavoritesById(_state.value.favorites[id].cityId)
         }
     }
 

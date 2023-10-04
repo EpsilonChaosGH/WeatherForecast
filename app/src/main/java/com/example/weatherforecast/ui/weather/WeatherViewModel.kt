@@ -122,7 +122,6 @@ class WeatherViewModel @Inject constructor(
                     )
                 }
             }
-
         }
     }
 
