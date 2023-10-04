@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weatherContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,10 +11,11 @@
     android:padding="@dimen/low_space">
 
     <ImageView
-        android:id="@+id/locationCityIconImageView"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/ic_baseline_location_on"
+        android:id="@+id/weatherIconImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_sun"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,53 +23,36 @@
         android:id="@+id/cityNameTextView"
         style="@style/TitleTextView"
         android:layout_marginStart="@dimen/low_space"
+        android:layout_marginBottom="@dimen/low_space"
         android:text="@string/test_city"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@id/locationCityIconImageView"
-        app:layout_constraintStart_toEndOf="@id/locationCityIconImageView"
-        app:layout_constraintTop_toTopOf="@+id/locationCityIconImageView" />
-
-    <TextView
-        android:id="@+id/temperatureTextView"
-        style="@style/TitleTextView"
-        android:text="@string/test_temperature"
-        android:textColor="@color/main_text_color"
-        android:textSize="62sp"
-        app:layout_constraintBottom_toTopOf="@+id/currentDateTextView"
-        app:layout_constraintEnd_toStartOf="@+id/weatherIconImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cityNameTextView" />
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/weatherIconImageView"
+        app:layout_constraintTop_toTopOf="@+id/weatherIconImageView" />
 
     <TextView
         android:id="@+id/currentDateTextView"
         style="@style/WeatherDetailsTextView"
         android:layout_marginStart="@dimen/low_space"
         android:text="@string/test_date"
-        app:layout_constraintBottom_toBottomOf="@id/weatherContainer"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/weatherIconImageView"
+        app:layout_constraintTop_toBottomOf="@+id/cityNameTextView" />
 
     <TextView
         android:id="@+id/currentWeatherTextView"
         style="@style/WeatherDetailsTextView"
-        android:layout_marginEnd="@dimen/low_space"
+        android:layout_marginStart="@dimen/low_space"
         android:text="@string/test_weather_description"
-        app:layout_constraintBottom_toBottomOf="@id/weatherContainer"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/weatherIconImageView"
+        app:layout_constraintTop_toBottomOf="@+id/currentDateTextView" />
 
-    <ImageView
-        android:id="@+id/weatherIconImageView"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginEnd="56dp"
-        android:src="@drawable/ic_sun"
-        app:layout_constraintBottom_toBottomOf="@+id/temperatureTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/temperatureTextView" />
-
-    <ImageView
-        android:id="@+id/favoriteImageView"
-        style="@style/WeatherIconImageView"
-        android:src="@drawable/ic_baseline_favorite_24"
+    <TextView
+        android:id="@+id/temperatureTextView"
+        style="@style/TitleTextView"
+        android:layout_marginEnd="@dimen/low_space"
+        android:text="@string/test_temperature"
+        android:textColor="@color/main_text_color"
+        android:textSize="46sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

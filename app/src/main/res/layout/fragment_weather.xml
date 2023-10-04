@@ -376,16 +376,5 @@
             app:barrierDirection="end"
             app:constraint_referenced_ids="titlePM10, titlePM25" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/main_text_color"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/weatherIconImageView"
-            app:layout_constraintEnd_toEndOf="@+id/weatherIconImageView"
-            app:layout_constraintStart_toStartOf="@+id/weatherIconImageView"
-            app:layout_constraintTop_toTopOf="@+id/weatherIconImageView" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

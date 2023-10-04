@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -76,6 +77,7 @@ class FavoritesRepositoryImpl @Inject constructor(
 
     override suspend fun deleteFromFavoritesById(id: Long) {
         appDatabase.favoritesDao().deleteFromFavorites(id)
+        if (appDatabase.weatherDao().observeWeather().first()?.id == id)
         appDatabase.weatherDao().updateFavorites(
             UpdateFavoritesTuple(
                 weatherKey = Const.WEATHER_KEY,

@@ -1,7 +1,10 @@
 package com.example.weatherforecast.mappers
 
 import com.example.data.entity.FavoritesEntity
+import com.example.weatherforecast.FORMAT_EEE_HH_mm
 import com.example.weatherforecast.FORMAT_EEE_d_MMMM_HH_mm
+import com.example.weatherforecast.FORMAT_HH_mm
+import com.example.weatherforecast.FORMAT_dd_MM_yy_HH_mm
 import com.example.weatherforecast.model.FavoritesItem
 import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.model.WeatherType
@@ -22,5 +25,5 @@ internal fun FavoritesEntity.toFavoritesItem() = FavoritesItem(
     humidity = "$humidity %",
     pressure = "$pressure hPa",
     windSpeed = "${windSpeed.roundToInt()} m/s",
-    data = data.format(FORMAT_EEE_d_MMMM_HH_mm, timezone)
+    data = data.format(FORMAT_HH_mm, timezone)
 )
