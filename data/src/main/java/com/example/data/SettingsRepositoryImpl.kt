@@ -39,7 +39,7 @@ class SettingsRepositoryImpl @Inject constructor(
         set(key = PREF_UNITS, value = units)
     }
 
-    private fun getAppVersion(): String = "Version: ???"
+    private fun getAppVersion(): String = "Version: 1.0"
 
     private suspend fun <T> set(key: Preferences.Key<T>, value: T) {
         context.dataStore.edit { settings ->
