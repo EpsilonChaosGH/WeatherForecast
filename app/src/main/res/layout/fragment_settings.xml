@@ -1,77 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:background="@color/main_color"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/medium_space">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <ImageView
+        android:id="@+id/languageImageView"
+        style="@style/WeatherIconImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_language" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/low_space"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/languageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_space"
+        android:text="@string/language"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/languageImageView"
+        app:layout_constraintStart_toEndOf="@+id/languageImageView"
+        app:layout_constraintTop_toTopOf="@+id/languageImageView" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_space">
+    <Spinner
+        android:id="@+id/langSpinner"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="@dimen/medium_space"
+        android:background="@drawable/background_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/languageTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/languageTextView"
+        app:layout_constraintTop_toTopOf="@+id/languageTextView" />
 
-                <ImageView
-                    style="@style/WeatherIconImageView"
-                    app:srcCompat="@drawable/ic_language" />
+    <ImageView
+        android:id="@+id/UnitsImageView"
+        style="@style/WeatherIconImageView"
+        android:layout_marginTop="@dimen/medium_space"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/languageImageView"
+        app:srcCompat="@drawable/ic_temperature" />
 
-                <TextView
-                    android:id="@+id/languageTextView"
-                    style="@style/TitleSettingsTextView"
-                    android:text="@string/language" />
+    <Spinner
+        android:id="@+id/unitsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="@dimen/medium_space"
+        android:background="@drawable/background_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/unitsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/languageTextView"
+        app:layout_constraintTop_toTopOf="@+id/unitsTextView" />
 
-                <Spinner
-                    android:id="@+id/langSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/medium_space"
-                    android:layout_weight="1"
-                    android:gravity="center|end" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_space">
-
-                <ImageView
-                    style="@style/WeatherIconImageView"
-                    app:srcCompat="@drawable/ic_temperature" />
-
-                <TextView
-                    android:id="@+id/unitsTextView"
-                    style="@style/TitleSettingsTextView"
-                    android:text="@string/units" />
-
-                <Spinner
-                    android:id="@+id/unitsSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/medium_space"
-                    android:layout_weight="1"
-                    android:gravity="center|end" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+    <TextView
+        android:id="@+id/unitsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_space"
+        android:text="@string/units"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UnitsImageView"
+        app:layout_constraintStart_toEndOf="@+id/UnitsImageView"
+        app:layout_constraintTop_toTopOf="@+id/UnitsImageView" />
 
     <TextView
         android:id="@+id/versionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="VERSION" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

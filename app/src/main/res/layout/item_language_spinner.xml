@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center|end"
     android:orientation="horizontal"
+    android:background="@color/main_secondary_color"
     android:padding="4dp">
 
     <TextView
@@ -16,8 +17,8 @@
 
     <ImageView
         android:id="@+id/languageItemIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="@dimen/medium_space"
         android:layout_marginEnd="@dimen/medium_space"
         android:src="@drawable/ic_language" />
