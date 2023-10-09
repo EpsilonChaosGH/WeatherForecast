@@ -7,7 +7,7 @@ interface SettingsRepository {
 
     fun getSettingsFlow(): Flow<SettingsState>
 
-    suspend fun setLanguageIndex(language: Int)
+    suspend fun setLanguage(language: String)
 
-    suspend fun setUnitsIndex(units: Int)
+    suspend fun setUnits(units: String)
 }

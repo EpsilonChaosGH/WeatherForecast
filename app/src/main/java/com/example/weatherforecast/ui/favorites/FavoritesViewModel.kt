@@ -6,16 +6,19 @@ import com.example.data.FavoritesRepository
 import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
+import com.example.weatherforecast.WhileUiSubscribed
 import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
 import com.example.weatherforecast.mappers.toFavoritesState
+import com.example.weatherforecast.model.SideEffect
 import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,65 +26,73 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val weatherRepository: WeatherRepository,
-    private val settingsRepository: SettingsRepository
-
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(FavoritesState())
-    val state: StateFlow<FavoritesState> = _state.asStateFlow()
+    private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
+    private val _isLoading = MutableStateFlow(false)
+    private val _emptyList = MutableStateFlow(false)
+    private val _favoritesRepository = favoritesRepository.getFavoritesFlow()
 
-    init {
-        listenFavorites()
-    }
+
+    val uiState: StateFlow<FavoritesState?> = combine(
+        _favoritesRepository,
+        _userMessage,
+        _isLoading,
+        _emptyList
+    ) { favorites, userMessage, isLoading, emptyList ->
+        favorites?.let {
+            FavoritesState(
+                it.map { it.toFavoritesItem() },
+                userMessage,
+                isLoading,
+                emptyList
+            )
+        }
+    }.stateIn(
+        viewModelScope,
+        WhileUiSubscribed,
+        null
+    )
 
     fun refreshFavorites() {
         viewModelScope.launch {
-            setState { copy(isRefreshing = true) }
-            val settings = settingsRepository.getSettingsFlow().first()
-            val favorites = favoritesRepository.refreshFavorites(
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            ).map { it.toFavoritesItem() }
-
-            setState { copy(favorites = favorites) }
-            setState { copy(isRefreshing = false) }
+            setLoading(true)
+            val favorites = favoritesRepository.refreshFavorites().map { it.toFavoritesItem() }
+            uiState.value?.favorites.let {
+                _favoritesRepository
+            }
+           // setState { copy(favorites = favorites) }
+            setLoading(false)
         }
     }
 
     fun deleteFromFavorites(id: Int) {
         viewModelScope.launch {
-            favoritesRepository.deleteFromFavoritesById(_state.value.favorites[id].cityId)
+            uiState.value?.let {
+                favoritesRepository.deleteFromFavoritesById(it.favorites[id].cityId)
+            }
         }
     }
 
     fun loadWeatherByCity(city: City) {
         viewModelScope.launch {
-            val settings = settingsRepository.getSettingsFlow().first()
-            weatherRepository.loadWeatherByCity(
-                city = city,
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            )
+            weatherRepository.loadWeatherByCity(city = city)
         }
     }
 
     private fun listenFavorites() {
         viewModelScope.launch {
-            val settings = settingsRepository.getSettingsFlow().first()
-            favoritesRepository.getFavoritesFlow(
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            ).collect { favoritesList ->
+            favoritesRepository.getFavoritesFlow().collect { favoritesList ->
                 if (!favoritesList.isNullOrEmpty()) {
-                    setState { favoritesList.toFavoritesState() }
+                  //  setState { favoritesList.toFavoritesState() }
                 } else {
-                    setState { copy(emptyListState = true) }
+                   // setState { copy(emptyListState = true) }
                 }
             }
         }
     }
 
-    private suspend fun setState(stateReducer: FavoritesState.() -> FavoritesState) {
-        _state.emit(stateReducer(state.value))
+    private fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
     }
 }

@@ -65,10 +65,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
     }
 
     private fun observeFavoritesState() = with(binding) {
-        collectFlow(viewModel.state) { state ->
+        collectFlow(viewModel.uiState) { state ->
             adapter.items = state.favorites
-            recyclerView.isInvisible = state.emptyListState
-            refreshLayout.isRefreshing = state.isRefreshing
+            recyclerView.isInvisible = state.emptyList
+            refreshLayout.isRefreshing = state.isLoading
         }
     }
 }

@@ -38,8 +38,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         binding.langSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (viewModel.state.value.selectedLanguageIndex != pos) {
-                    viewModel.setLanguageIndex(pos)
+                val language = SupportedLanguage.getLanguageValue(pos)
+                if (viewModel.state.value.selectedLanguage != language) {
+                    viewModel.setLanguage(language)
                 }
             }
 
@@ -48,9 +49,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         binding.unitsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (viewModel.state.value.selectedUnitIndex != pos) {
-                    Toast.makeText(requireContext(), pos.toString(), Toast.LENGTH_SHORT).show()
-                    viewModel.setUnitsIndex(pos)
+                val units = Units.getUnitsValue(pos)
+                if (viewModel.state.value.selectedUnits != units) {
+                    Toast.makeText(requireContext(), units, Toast.LENGTH_SHORT).show()
+                    viewModel.setUnits(units)
                 }
             }
 
@@ -62,8 +64,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun observeSettingsState() = with(binding) {
         collectFlow(viewModel.state) { state ->
-            langSpinner.setSelection(state.selectedLanguageIndex)
-            unitsSpinner.setSelection(state.selectedUnitIndex)
+            langSpinner.setSelection(SupportedLanguage.getIndex(state.selectedLanguage))
+            unitsSpinner.setSelection(Units.getIndex(state.selectedUnits))
             versionTextView.text = state.versionInfo
         }
     }

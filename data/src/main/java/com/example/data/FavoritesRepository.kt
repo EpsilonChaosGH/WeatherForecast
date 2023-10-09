@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoritesRepository {
 
-    suspend fun getFavoritesFlow(units: String, language: String): Flow<List<FavoritesEntity>?>
+    fun getFavoritesFlow(): Flow<List<FavoritesEntity>?>
 
-    suspend fun refreshFavorites(units: String, language: String): List<FavoritesEntity>
+    suspend fun refreshFavorites(): List<FavoritesEntity>
 
     suspend fun addToFavorites(favorites: FavoritesDbEntity)
 

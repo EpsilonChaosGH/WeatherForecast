@@ -23,40 +23,41 @@ import javax.inject.Singleton
 class FavoritesRepositoryImpl @Inject constructor(
     private val appDatabase: AppDatabase,
     private val weatherService: CurrentWeatherService,
+    private val settingsRepository: SettingsRepository,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : FavoritesRepository {
-    override suspend fun getFavoritesFlow(
-        units: String,
-        language: String
-    ): Flow<List<FavoritesEntity>?> {
+    override  fun getFavoritesFlow(): Flow<List<FavoritesEntity>?> {
         return appDatabase.favoritesDao().observeFavorites().map {
             withContext(dispatcher) {
+                val settings = settingsRepository.getSettingsFlow().first()
                 val favoritesList = mutableListOf<FavoritesEntity>()
                 it.map {
                     async {
                         weatherService.getCurrentWeatherByCity(
                             city = it.city,
-                            units = units,
-                            language = language
+                            language = settings.selectedLanguage,
+                            units = settings.selectedUnits
                         ).getResult()
                     }
                 }.awaitAll().forEach {
                     favoritesList.add(it.toFavoritesEntity())
                 }
+
                 return@withContext favoritesList
             }
         }
     }
 
-    override suspend fun refreshFavorites(units: String, language: String): List<FavoritesEntity> =
+    override suspend fun refreshFavorites(): List<FavoritesEntity> =
         withContext(dispatcher) {
             val favoritesList = mutableListOf<FavoritesEntity>()
             appDatabase.favoritesDao().getFavorites().map {
+                val settings = settingsRepository.getSettingsFlow().first()
                 async {
                     weatherService.getCurrentWeatherByCity(
                         city = it.city,
-                        units = units,
-                        language = language
+                        language = settings.selectedLanguage,
+                        units = settings.selectedUnits
                     ).getResult()
                 }
             }.awaitAll().forEach {

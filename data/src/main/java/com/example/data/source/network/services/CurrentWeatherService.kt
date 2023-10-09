@@ -12,8 +12,8 @@ interface CurrentWeatherService {
     suspend fun getCurrentWeatherByCity(
         @Query("q") city: String,
         @Query("appid") appId: String = Const.APP_ID,
-        @Query("units") units: String = Const.UNITS_METRIC,
-        @Query("lang") language: String = Const.LANG_EN
+        @Query("lang") language: String = Const.LANG_EN,
+        @Query("units") units: String = Const.UNITS_METRIC
     ): Response<CurrentWeatherResponse>
 
     @GET("weather?")
@@ -21,7 +21,7 @@ interface CurrentWeatherService {
         @Query("lat") lat: String,
         @Query("lon") lon: String,
         @Query("appid") appId: String = Const.APP_ID,
-        @Query("units") units: String = Const.UNITS_METRIC,
-        @Query("lang") language: String = Const.LANG_EN
+        @Query("lang") language: String = Const.LANG_EN,
+        @Query("units") units: String = Const.UNITS_METRIC
     ): Response<CurrentWeatherResponse>
 }
