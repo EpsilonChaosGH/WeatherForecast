@@ -2,6 +2,7 @@ package com.example.weatherforecast.ui.favorites
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -69,6 +70,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
             adapter.items = state.favorites
             recyclerView.isInvisible = state.emptyList
             refreshLayout.isRefreshing = state.isLoading
+
+            state.userMessage.get()?.let {
+                Toast.makeText(requireContext(), getString(it), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

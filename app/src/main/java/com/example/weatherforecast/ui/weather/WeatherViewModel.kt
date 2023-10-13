@@ -1,5 +1,6 @@
 package com.example.weatherforecast.ui.weather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.utils.CityNotFoundException
@@ -60,11 +61,14 @@ class WeatherViewModel @Inject constructor(
     )
 
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e("aaa1",exception.message.toString())
+        Log.e("aaa1",exception.toString())
         val result = when (exception) {
             is ConnectionException -> R.string.error_connection
             is CityNotFoundException -> R.string.error_404_city_not_found
             is InvalidApiKeyException -> R.string.error_401_invalid_api_key
             is RequestRateLimitException -> R.string.error_429_request_rate_limit_surpassing
+            is Exception -> R.string.error_internal
             else -> R.string.error_internal
         }
         showMessage(result)
