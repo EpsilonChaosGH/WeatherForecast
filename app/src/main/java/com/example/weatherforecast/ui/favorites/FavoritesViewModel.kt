@@ -1,21 +1,26 @@
 package com.example.weatherforecast.ui.favorites
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.FavoritesRepository
-import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
+import com.example.data.utils.CityNotFoundException
+import com.example.data.utils.ConnectionException
+import com.example.data.utils.InvalidApiKeyException
+import com.example.data.utils.RequestRateLimitException
+import com.example.weatherforecast.R
+import com.example.weatherforecast.WhileUiSubscribed
 import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
-import com.example.weatherforecast.mappers.toFavoritesState
-import com.example.weatherforecast.model.SupportedLanguage
-import com.example.weatherforecast.model.Units
+import com.example.weatherforecast.model.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,65 +28,78 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val weatherRepository: WeatherRepository,
-    private val settingsRepository: SettingsRepository
-
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(FavoritesState())
-    val state: StateFlow<FavoritesState> = _state.asStateFlow()
+    private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
+    private val _isLoading = MutableStateFlow(false)
+    private val _emptyList = MutableStateFlow(false)
+
+    val uiState: StateFlow<FavoritesState?> = combine(
+        favoritesRepository.favoritesFlow,
+        _userMessage,
+        _isLoading,
+        _emptyList
+    ) { favorites, userMessage, isLoading, emptyList ->
+            Log.e("aaa","fav VM")
+            FavoritesState(
+                favorites.map { it.toFavoritesItem() },
+                userMessage,
+                isLoading,
+                emptyList
+            )
+    }.stateIn(
+        viewModelScope,
+        WhileUiSubscribed,
+        null
+    )
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        val result = when (exception) {
+            is ConnectionException -> R.string.error_connection
+            is CityNotFoundException -> R.string.error_404_city_not_found
+            is InvalidApiKeyException -> R.string.error_401_invalid_api_key
+            is RequestRateLimitException -> R.string.error_429_request_rate_limit_surpassing
+            else -> R.string.error_internal
+        }
+        showMessage(result)
+        setLoading(false)
+    }
 
     init {
-        listenFavorites()
+        viewModelScope.launch(exceptionHandler) {
+            favoritesRepository.getFavoritesFlow()
+        }
+    }
+
+    private fun showMessage(messageRes: Int) {
+        _userMessage.value = SideEffect(messageRes)
     }
 
     fun refreshFavorites() {
-        viewModelScope.launch {
-            setState { copy(isRefreshing = true) }
-            val settings = settingsRepository.getSettingsFlow().first()
-            val favorites = favoritesRepository.refreshFavorites(
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            ).map { it.toFavoritesItem() }
-
-            setState { copy(favorites = favorites) }
-            setState { copy(isRefreshing = false) }
+        viewModelScope.launch(exceptionHandler) {
+            setLoading(true)
+            favoritesRepository.refreshFavorites()
+            setLoading(false)
         }
     }
 
     fun deleteFromFavorites(id: Int) {
         viewModelScope.launch {
-            favoritesRepository.deleteFromFavoritesById(_state.value.favorites[id].cityId)
-        }
-    }
-
-    fun loadWeatherByCity(city: City) {
-        viewModelScope.launch {
-            val settings = settingsRepository.getSettingsFlow().first()
-            weatherRepository.loadWeatherByCity(
-                city = city,
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            )
-        }
-    }
-
-    private fun listenFavorites() {
-        viewModelScope.launch {
-            val settings = settingsRepository.getSettingsFlow().first()
-            favoritesRepository.getFavoritesFlow(
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
-            ).collect { favoritesList ->
-                if (!favoritesList.isNullOrEmpty()) {
-                    setState { favoritesList.toFavoritesState() }
-                } else {
-                    setState { copy(emptyListState = true) }
-                }
+            uiState.value?.let {
+                favoritesRepository.deleteFromFavoritesById(it.favorites[id].cityId)
             }
         }
     }
 
-    private suspend fun setState(stateReducer: FavoritesState.() -> FavoritesState) {
-        _state.emit(stateReducer(state.value))
+    fun loadWeatherByCity(city: City) {
+        Log.e("aaa",uiState.value?.emptyList.toString())
+        viewModelScope.launch(exceptionHandler) {
+            weatherRepository.loadWeatherByCity(city = city)
+        }
+        Log.e("aaa",uiState.value?.emptyList.toString())
+    }
+
+    private fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
     }
 }

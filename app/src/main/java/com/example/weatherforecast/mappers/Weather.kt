@@ -27,7 +27,7 @@ internal fun WeatherEntity.toWeatherState(
     ),
     city = city,
     country = country,
-    temperature = "${temperature.roundToInt()}${Units.values()[settingsState.selectedUnitIndex].units}",
+    temperature = "${temperature.roundToInt()}${Units.getUnits(settingsState.selectedUnits)}",
     icon = WeatherType.find(icon),
     description = description,
     feelsLike = "${feelsLike.roundToInt()}°",

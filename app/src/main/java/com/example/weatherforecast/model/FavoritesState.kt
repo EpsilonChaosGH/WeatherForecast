@@ -1,7 +1,9 @@
 package com.example.weatherforecast.model
 
+
 data class FavoritesState(
     val favorites: List<FavoritesItem> = listOf(),
-    val isRefreshing: Boolean = false,
-    val emptyListState: Boolean = false,
+    val userMessage: SideEffect<Int?> = SideEffect(null),
+    val isLoading: Boolean = false,
+    val emptyList: Boolean = false,
 )

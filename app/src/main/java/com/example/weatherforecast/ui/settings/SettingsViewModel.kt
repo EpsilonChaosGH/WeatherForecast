@@ -22,15 +22,15 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsState()
     )
 
-    fun setLanguageIndex(languageIndex: Int) {
+    fun setLanguage(language: String) {
         viewModelScope.launch {
-            settingsRepository.setLanguageIndex(languageIndex)
+            settingsRepository.setLanguage(language)
         }
     }
 
-    fun setUnitsIndex(unitsIndex: Int) {
+    fun setUnits(units: String) {
         viewModelScope.launch {
-            settingsRepository.setUnitsIndex(unitsIndex)
+            settingsRepository.setUnits(units)
         }
     }
 }

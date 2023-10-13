@@ -1,5 +1,6 @@
 package com.example.data
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.example.data.di.DefaultDispatcher
 import com.example.data.mappers.toAirEntity
@@ -18,6 +19,7 @@ import com.example.data.utils.wrapBackendExceptions
 import com.example.data.utils.wrapSQLiteException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,6 +28,7 @@ class WeatherRepositoryImpl @Inject constructor(
     private val forecastService: ForecastService,
     private val airService: AirService,
     private val appDatabase: AppDatabase,
+    private val settingsRepository: SettingsRepository,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : WeatherRepository {
     override fun getWeatherFlow(): Flow<WeatherEntity?> {
@@ -35,13 +38,14 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     @WorkerThread
-    override suspend fun loadWeatherByCoordinates(coordinates: Coordinates, units: String, language: String) =
+    override suspend fun loadWeatherByCoordinates(coordinates: Coordinates) =
         wrapBackendExceptions {
+            val settings = settingsRepository.getSettingsFlow().first()
             val weather = currentWeatherService.getCurrentWeatherByCoordinates(
                 lat = coordinates.lat,
                 lon = coordinates.lon,
-                units = units,
-                language = language
+                language = settings.selectedLanguage,
+                units = settings.selectedUnits
             ).getResult()
             val forecast = forecastService.getForecastByCoordinate(
                 lat = coordinates.lat, lon = coordinates.lon
@@ -62,12 +66,16 @@ class WeatherRepositoryImpl @Inject constructor(
         }
 
     @WorkerThread
-    override suspend fun loadWeatherByCity(city: City, units: String, language: String) = wrapBackendExceptions {
+    override suspend fun loadWeatherByCity(city: City) = wrapBackendExceptions {
+        val settings = settingsRepository.getSettingsFlow().first()
+        Log.e("aaa",settings.selectedUnits)
         val weather = currentWeatherService.getCurrentWeatherByCity(
             city = city.city,
-            units = units,
-            language = language
+            language = settings.selectedLanguage,
+            units = settings.selectedUnits
         ).getResult()
+        Log.e("aaa",weather.main.temp.toString())
+
         val forecast = forecastService.getForecastByCity(city.city).getResult()
         val air = airService.getAirByCoordinate(
             lat = weather.coord.lat.toString(), lon = weather.coord.lon.toString()

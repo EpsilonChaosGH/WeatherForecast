@@ -2,13 +2,15 @@ package com.example.data
 
 import com.example.data.entity.FavoritesEntity
 import com.example.data.source.local.entity.FavoritesDbEntity
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface FavoritesRepository {
 
-    suspend fun getFavoritesFlow(units: String, language: String): Flow<List<FavoritesEntity>?>
+    var favoritesFlow: MutableStateFlow<List<FavoritesEntity>>
 
-    suspend fun refreshFavorites(units: String, language: String): List<FavoritesEntity>
+    suspend fun getFavoritesFlow()
+
+    suspend fun refreshFavorites()
 
     suspend fun addToFavorites(favorites: FavoritesDbEntity)
 

@@ -1,5 +1,6 @@
 package com.example.weatherforecast.ui.weather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.utils.CityNotFoundException
@@ -20,7 +21,7 @@ import com.example.weatherforecast.WhileUiSubscribed
 import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -59,21 +60,34 @@ class WeatherViewModel @Inject constructor(
         null
     )
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e("aaa1",exception.message.toString())
+        Log.e("aaa1",exception.toString())
+        val result = when (exception) {
+            is ConnectionException -> R.string.error_connection
+            is CityNotFoundException -> R.string.error_404_city_not_found
+            is InvalidApiKeyException -> R.string.error_401_invalid_api_key
+            is RequestRateLimitException -> R.string.error_429_request_rate_limit_surpassing
+            is Exception -> R.string.error_internal
+            else -> R.string.error_internal
+        }
+        showMessage(result)
+        setLoading(false)
+    }
+
     fun showMessage(messageRes: Int) {
         _userMessage.value = SideEffect(messageRes)
     }
 
     fun refreshWeather() {
-        safeLaunch {
+        viewModelScope.launch(exceptionHandler) {
             setLoading(true)
             uiState.value?.let { state ->
                 weatherRepository.loadWeatherByCoordinates(
                     Coordinates(
                         lat = state.coordinates.lat,
                         lon = state.coordinates.lon,
-                    ),
-                    units = Units.values()[state.settingsState.selectedUnitIndex].value,
-                    language = SupportedLanguage.values()[state.settingsState.selectedLanguageIndex].languageValue
+                    )
                 )
             }
             setLoading(false)
@@ -81,26 +95,20 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByCity(city: City) {
-        safeLaunch {
+        viewModelScope.launch(exceptionHandler) {
             setLoading(true)
-            val settings = settingsRepository.getSettingsFlow().first()
             weatherRepository.loadWeatherByCity(
-                city = city,
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
+                city = city
             )
             setLoading(false)
         }
     }
 
     fun getWeatherByCoordinates(coordinates: Coordinates) {
-        safeLaunch {
+        viewModelScope.launch(exceptionHandler) {
             setLoading(true)
-            val settings = settingsRepository.getSettingsFlow().first()
             weatherRepository.loadWeatherByCoordinates(
-                coordinates = coordinates,
-                units = Units.values()[settings.selectedUnitIndex].value,
-                language = SupportedLanguage.values()[settings.selectedLanguageIndex].languageValue
+                coordinates = coordinates
             )
             setLoading(false)
         }
@@ -131,28 +139,5 @@ class WeatherViewModel @Inject constructor(
 
     private fun setLoading(loading: Boolean) {
         _isLoading.value = loading
-    }
-
-    private fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch {
-            val result: Int? = try {
-                block.invoke(this)
-                null
-            } catch (e: ConnectionException) {
-                R.string.error_connection
-            } catch (e: CityNotFoundException) {
-                R.string.error_404_city_not_found
-            } catch (e: InvalidApiKeyException) {
-                R.string.error_401_invalid_api_key
-            } catch (e: RequestRateLimitException) {
-                R.string.error_429_request_rate_limit_surpassing
-            } catch (e: Exception) {
-                R.string.error_internal
-            }
-            if (result != null) {
-                showMessage(result)
-                setLoading(false)
-            }
-        }
     }
 }

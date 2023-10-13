@@ -61,5 +61,17 @@ enum class SupportedLanguage(
                 SpinnerItem(it.languageName, it.iconResId)
             }.toTypedArray()
         }
+
+        fun getLanguageValue(index: Int): String {
+            return SupportedLanguage.values()[index].languageValue
+        }
+
+        fun getIndex(value: String): Int {
+            var result = 0
+             SupportedLanguage.values().forEachIndexed { index, language ->
+                  if (language.languageValue == value) result = index
+             }
+            return result
+        }
     }
 }
