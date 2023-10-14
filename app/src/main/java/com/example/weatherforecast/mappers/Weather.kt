@@ -38,7 +38,6 @@ internal fun WeatherEntity.toWeatherState(
     timezone = timezone,
     forecastState = forecast.toForecastState(FORMAT_EEE_HH_mm, timezone),
     airState = air.toAirState(),
-    settingsState = settingsState,
     userMessage = userMessage,
     isLoading = isLoading,
     emptyCityError = emptyCityError

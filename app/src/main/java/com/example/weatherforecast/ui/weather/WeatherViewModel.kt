@@ -34,7 +34,7 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val favoritesRepository: FavoritesRepository,
-    private val settingsRepository: SettingsRepository
+    settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))

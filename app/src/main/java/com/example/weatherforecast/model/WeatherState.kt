@@ -20,7 +20,6 @@ data class WeatherState(
     val timezone: Long,
     val forecastState: List<ForecastState>,
     val airState: AirState,
-    val settingsState: SettingsState,
     val userMessage: SideEffect<Int?> = SideEffect(null),
     val isLoading: Boolean = false,
     val emptyCityError: Boolean = false,

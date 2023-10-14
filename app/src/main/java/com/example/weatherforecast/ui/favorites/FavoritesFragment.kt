@@ -25,7 +25,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
     private val viewModel by viewModels<FavoritesViewModel>()
 
     private val adapter = FavoritesAdapter(object : FavoritesListener {
-        override fun delete(id: Long) {}
 
         override fun showDetails(city: City) {
             viewModel.loadWeatherByCity(city)
@@ -68,8 +67,8 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
     private fun observeFavoritesState() = with(binding) {
         collectFlow(viewModel.uiState) { state ->
             adapter.items = state.favorites
-            recyclerView.isInvisible = state.emptyList
             refreshLayout.isRefreshing = state.isLoading
+            recyclerView.isInvisible = state.favorites.isEmpty()
 
             state.userMessage.get()?.let {
                 Toast.makeText(requireContext(), getString(it), Toast.LENGTH_SHORT).show()

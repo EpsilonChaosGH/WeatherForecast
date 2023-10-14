@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.FavoritesRepository
+import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
 import com.example.data.utils.CityNotFoundException
@@ -28,25 +29,24 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val weatherRepository: WeatherRepository,
+    settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
     private val _isLoading = MutableStateFlow(false)
-    private val _emptyList = MutableStateFlow(false)
 
     val uiState: StateFlow<FavoritesState?> = combine(
         favoritesRepository.favoritesFlow,
+        settingsRepository.getSettingsFlow(),
         _userMessage,
-        _isLoading,
-        _emptyList
-    ) { favorites, userMessage, isLoading, emptyList ->
-            Log.e("aaa","fav VM")
-            FavoritesState(
-                favorites.map { it.toFavoritesItem() },
-                userMessage,
-                isLoading,
-                emptyList
-            )
+        _isLoading
+    ) { favorites, settings, userMessage, isLoading ->
+        Log.e("aaa", "fav VM")
+        FavoritesState(
+            favorites.map { it.toFavoritesItem(settings) },
+            userMessage,
+            isLoading
+        )
     }.stateIn(
         viewModelScope,
         WhileUiSubscribed,
@@ -66,13 +66,9 @@ class FavoritesViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch {
             favoritesRepository.getFavoritesFlow()
         }
-    }
-
-    private fun showMessage(messageRes: Int) {
-        _userMessage.value = SideEffect(messageRes)
     }
 
     fun refreshFavorites() {
@@ -92,11 +88,13 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun loadWeatherByCity(city: City) {
-        Log.e("aaa",uiState.value?.emptyList.toString())
         viewModelScope.launch(exceptionHandler) {
             weatherRepository.loadWeatherByCity(city = city)
         }
-        Log.e("aaa",uiState.value?.emptyList.toString())
+    }
+
+    private fun showMessage(messageRes: Int) {
+        _userMessage.value = SideEffect(messageRes)
     }
 
     private fun setLoading(loading: Boolean) {
