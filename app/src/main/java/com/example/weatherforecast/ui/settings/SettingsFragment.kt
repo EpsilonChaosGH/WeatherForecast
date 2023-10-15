@@ -14,7 +14,6 @@ import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 

@@ -10,7 +10,6 @@ import android.widget.TextView
 import com.example.weatherforecast.R
 import com.example.weatherforecast.model.SpinnerItem
 
-
 class SettingSpinnerAdapter(context: Context, var items: Array<SpinnerItem>) :
     ArrayAdapter<SpinnerItem>(context, 0, items) {
 

@@ -5,7 +5,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
-
 open class AppException : RuntimeException {
     constructor() : super()
     constructor(message: String) : super(message)

@@ -6,7 +6,6 @@ import com.example.weatherforecast.model.WeatherType
 import com.example.weatherforecast.format
 import kotlin.math.roundToInt
 
-
 fun List<ForecastEntity>.toForecastState(dataFormat: String, timeZone: Long): List<ForecastState> {
     return this.map {
         ForecastState(

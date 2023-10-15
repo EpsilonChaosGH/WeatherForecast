@@ -12,7 +12,6 @@ interface FavoritesListener {
     fun showDetails(city: City)
 }
 
-
 class FavoritesDiffCallback(
     private val oldList: List<FavoritesItem>,
     private val newList: List<FavoritesItem>
