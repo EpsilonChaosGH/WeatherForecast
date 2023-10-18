@@ -25,7 +25,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.data.entity.City
 import com.example.data.entity.Coordinates
 import com.example.weatherforecast.R
-import com.example.weatherforecast.collectFlow
+import com.example.weatherforecast.utils.collectFlow
 import com.example.weatherforecast.databinding.FragmentWeatherBinding
 import com.example.weatherforecast.model.AirState
 import com.google.android.gms.location.LocationServices

@@ -1,4 +1,4 @@
-package com.example.weatherforecast
+package com.example.weatherforecast.utils
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle

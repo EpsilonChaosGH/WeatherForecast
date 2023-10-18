@@ -12,7 +12,7 @@ import com.example.data.utils.ConnectionException
 import com.example.data.utils.InvalidApiKeyException
 import com.example.data.utils.RequestRateLimitException
 import com.example.weatherforecast.R
-import com.example.weatherforecast.WhileUiSubscribed
+import com.example.weatherforecast.utils.WhileUiSubscribed
 import com.example.weatherforecast.model.FavoritesState
 import com.example.weatherforecast.mappers.toFavoritesItem
 import com.example.weatherforecast.model.SideEffect

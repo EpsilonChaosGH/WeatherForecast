@@ -9,6 +9,6 @@ fun<T> Response<T>.getResult(): T{
         return it
         } ?: throw NotFoundException()
     } else{
-        throw BackendException(code(),"!!!")
+        throw BackendException(code(),"BackendException")
     }
 }

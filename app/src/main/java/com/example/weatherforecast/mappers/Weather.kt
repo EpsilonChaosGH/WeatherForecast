@@ -3,12 +3,12 @@ package com.example.weatherforecast.mappers
 import com.example.data.entity.Coordinates
 import com.example.data.entity.SettingsState
 import com.example.data.entity.WeatherEntity
-import com.example.weatherforecast.FORMAT_EEE_HH_mm
-import com.example.weatherforecast.FORMAT_EEE_d_MMMM_HH_mm
+import com.example.weatherforecast.utils.FORMAT_EEE_HH_mm
+import com.example.weatherforecast.utils.FORMAT_EEE_d_MMMM_HH_mm
 import com.example.weatherforecast.model.SideEffect
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.model.WeatherType
-import com.example.weatherforecast.format
+import com.example.weatherforecast.utils.format
 import com.example.weatherforecast.model.Units
 import kotlin.math.roundToInt
 

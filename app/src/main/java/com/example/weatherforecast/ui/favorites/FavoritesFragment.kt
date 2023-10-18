@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.data.entity.City
 import com.example.weatherforecast.R
-import com.example.weatherforecast.collectFlow
+import com.example.weatherforecast.utils.collectFlow
 import com.example.weatherforecast.databinding.FragmentFavoriteBinding
 import dagger.hilt.android.AndroidEntryPoint
 

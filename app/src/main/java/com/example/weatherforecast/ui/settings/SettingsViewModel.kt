@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.SettingsRepository
 import com.example.data.entity.SettingsState
-import com.example.weatherforecast.WhileUiSubscribed
+import com.example.weatherforecast.utils.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
