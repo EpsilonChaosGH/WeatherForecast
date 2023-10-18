@@ -9,10 +9,8 @@ import com.example.weatherforecast.databinding.ItemFavoriteBinding
 import com.example.weatherforecast.model.FavoritesItem
 
 interface FavoritesListener {
-    fun delete(id: Long)
     fun showDetails(city: City)
 }
-
 
 class FavoritesDiffCallback(
     private val oldList: List<FavoritesItem>,
@@ -48,7 +46,6 @@ class FavoritesAdapter(
             currentWeatherTextView.text = item.description
             weatherIconImageView.setImageResource(item.weatherType.iconResId)
 
-           // favoriteImageView.setOnClickListener { listener.delete(item.cityId) }
             itemView.setOnClickListener { listener.showDetails(City(item.city)) }
         }
     }

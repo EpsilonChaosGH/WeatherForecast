@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.weatherforecast.R
-import com.example.weatherforecast.collectFlow
+import com.example.weatherforecast.utils.collectFlow
 import com.example.weatherforecast.databinding.FragmentSettingsBinding
 import com.example.weatherforecast.model.SupportedLanguage
 import com.example.weatherforecast.model.Units
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment(R.layout.fragment_settings) {

@@ -13,6 +13,7 @@ interface ForecastService {
         @Query("lat") lat: String,
         @Query("lon") lon: String,
         @Query("appid") appId: String = Const.APP_ID,
+        @Query("lang") language: String = Const.LANG_EN,
         @Query("units") units: String = Const.UNITS_METRIC,
         @Query("cnt") cnt: String = Const.CNT
     ): Response<ForecastResponse>
@@ -21,6 +22,7 @@ interface ForecastService {
     suspend fun getForecastByCity(
         @Query("q") city: String,
         @Query("appid") appId: String = Const.APP_ID,
+        @Query("lang") language: String = Const.LANG_EN,
         @Query("units") units: String = Const.UNITS_METRIC,
         @Query("cnt") cnt: String = Const.CNT
     ): Response<ForecastResponse>

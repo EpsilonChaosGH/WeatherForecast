@@ -3,15 +3,14 @@ package com.example.weatherforecast.mappers
 import com.example.data.entity.Coordinates
 import com.example.data.entity.SettingsState
 import com.example.data.entity.WeatherEntity
-import com.example.weatherforecast.FORMAT_EEE_HH_mm
-import com.example.weatherforecast.FORMAT_EEE_d_MMMM_HH_mm
+import com.example.weatherforecast.utils.FORMAT_EEE_HH_mm
+import com.example.weatherforecast.utils.FORMAT_EEE_d_MMMM_HH_mm
 import com.example.weatherforecast.model.SideEffect
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.model.WeatherType
-import com.example.weatherforecast.format
+import com.example.weatherforecast.utils.format
 import com.example.weatherforecast.model.Units
 import kotlin.math.roundToInt
-
 
 internal fun WeatherEntity.toWeatherState(
     settingsState: SettingsState,
@@ -38,7 +37,6 @@ internal fun WeatherEntity.toWeatherState(
     timezone = timezone,
     forecastState = forecast.toForecastState(FORMAT_EEE_HH_mm, timezone),
     airState = air.toAirState(),
-    settingsState = settingsState,
     userMessage = userMessage,
     isLoading = isLoading,
     emptyCityError = emptyCityError

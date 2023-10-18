@@ -2,7 +2,6 @@ package com.example.data.source.network.response
 
 import com.squareup.moshi.Json
 
-
 data class CurrentWeatherResponse(
     val id: Long,
     val coord: Coord,

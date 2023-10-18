@@ -1,6 +1,5 @@
 package com.example.weatherforecast.mappers
 
-
 import com.example.data.source.local.entity.AirDbEntity
 import com.example.weatherforecast.model.AirQuality
 import com.example.weatherforecast.model.AirState

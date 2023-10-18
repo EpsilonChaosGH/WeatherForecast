@@ -6,7 +6,6 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
-
 class ForecastConverter {
 
     private val type = Types.newParameterizedType(List::class.java, ForecastEntity::class.java)

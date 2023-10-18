@@ -68,13 +68,11 @@ class WeatherRepositoryImpl @Inject constructor(
     @WorkerThread
     override suspend fun loadWeatherByCity(city: City) = wrapBackendExceptions {
         val settings = settingsRepository.getSettingsFlow().first()
-        Log.e("aaa",settings.selectedUnits)
         val weather = currentWeatherService.getCurrentWeatherByCity(
             city = city.city,
             language = settings.selectedLanguage,
             units = settings.selectedUnits
         ).getResult()
-        Log.e("aaa",weather.main.temp.toString())
 
         val forecast = forecastService.getForecastByCity(city.city).getResult()
         val air = airService.getAirByCoordinate(

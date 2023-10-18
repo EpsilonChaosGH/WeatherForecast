@@ -17,15 +17,12 @@ import com.example.weatherforecast.R
 import com.example.weatherforecast.model.WeatherState
 import com.example.weatherforecast.mappers.toWeatherState
 import com.example.weatherforecast.model.SideEffect
-import com.example.weatherforecast.WhileUiSubscribed
-import com.example.weatherforecast.model.SupportedLanguage
-import com.example.weatherforecast.model.Units
+import com.example.weatherforecast.utils.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +31,7 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val favoritesRepository: FavoritesRepository,
-    private val settingsRepository: SettingsRepository
+    settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))

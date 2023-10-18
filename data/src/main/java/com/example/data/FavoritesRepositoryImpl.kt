@@ -11,6 +11,7 @@ import com.example.data.source.network.services.CurrentWeatherService
 import com.example.data.utils.Const
 import com.example.data.utils.getResult
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +28,7 @@ class FavoritesRepositoryImpl @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : FavoritesRepository {
 
-    override var favoritesFlow: MutableStateFlow<List<FavoritesEntity>> = MutableStateFlow(listOf())
+    override val favoritesFlow: MutableStateFlow<List<FavoritesEntity>> = MutableStateFlow(listOf())
 
     private suspend fun getFavorites(favorites: List<FavoritesDbEntity>) = withContext(dispatcher) {
         Log.e("aaa","get f")

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 interface FavoritesRepository {
 
-    var favoritesFlow: MutableStateFlow<List<FavoritesEntity>>
+    val favoritesFlow: MutableStateFlow<List<FavoritesEntity>>
 
     suspend fun getFavoritesFlow()
 
