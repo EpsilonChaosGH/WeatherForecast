@@ -1,8 +1,8 @@
 package com.example.data
 
-import android.util.Log
 import com.example.data.di.DefaultDispatcher
 import com.example.data.entity.FavoritesEntity
+import com.example.data.entity.SettingsState
 import com.example.data.source.local.entity.FavoritesDbEntity
 import com.example.data.mappers.toFavoritesEntity
 import com.example.data.source.local.AppDatabase
@@ -11,10 +11,13 @@ import com.example.data.source.network.services.CurrentWeatherService
 import com.example.data.utils.Const
 import com.example.data.utils.getResult
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,37 +31,40 @@ class FavoritesRepositoryImpl @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : FavoritesRepository {
 
-    override val favoritesFlow: MutableStateFlow<List<FavoritesEntity>> = MutableStateFlow(listOf())
+    private val _favoritesFlow = MutableStateFlow<List<FavoritesEntity>>(listOf())
+    override val favoritesFlow: StateFlow<List<FavoritesEntity>> = _favoritesFlow.asStateFlow()
 
-    private suspend fun getFavorites(favorites: List<FavoritesDbEntity>) = withContext(dispatcher) {
-        Log.e("aaa","get f")
-        val favoritesList = mutableListOf<FavoritesEntity>()
-        val settings = settingsRepository.getSettingsFlow().first()
-        favorites.map {
-            async {
-                weatherService.getCurrentWeatherByCity(
-                    city = it.city,
-                    language = settings.selectedLanguage,
-                    units = settings.selectedUnits
-                ).getResult()
+    private suspend fun getFavorites(favorites: List<FavoritesDbEntity>, settings: SettingsState) =
+        withContext(dispatcher) {
+            val favoritesList = mutableListOf<FavoritesEntity>()
+            favorites.map {
+                async {
+                    weatherService.getCurrentWeatherByCoordinates(
+                        lon = it.lon,
+                        lat = it.lat,
+                        language = settings.selectedLanguage,
+                        units = settings.selectedUnits
+                    ).getResult()
+                }
+            }.awaitAll().forEach {
+                favoritesList.add(it.toFavoritesEntity())
             }
-        }.awaitAll().forEach {
-            favoritesList.add(it.toFavoritesEntity())
+            return@withContext favoritesList
         }
-        return@withContext favoritesList
-    }
 
-    override suspend fun getFavoritesFlow() {
-        Log.e("aaa","get ffff")
-        appDatabase.favoritesDao().observeFavorites().collect {
-            favoritesFlow.value = getFavorites(it)
-        }
-        Log.e("aaa","get ffff123123")
+    override suspend fun observeFavorites() {
+        combine(
+            appDatabase.favoritesDao().observeFavorites(),
+            settingsRepository.getSettingsFlow()
+        ) { favorites, settings ->
+            _favoritesFlow.value = getFavorites(favorites, settings)
+        }.collect()
     }
 
     override suspend fun refreshFavorites() = withContext(dispatcher) {
         val result = appDatabase.favoritesDao().observeFavorites().first()
-            favoritesFlow.value = getFavorites(result)
+        val settings = settingsRepository.getSettingsFlow().first()
+        _favoritesFlow.value = getFavorites(result, settings)
     }
 
     override suspend fun addToFavorites(favorites: FavoritesDbEntity) {

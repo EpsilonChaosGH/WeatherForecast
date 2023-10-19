@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface AirService {
 
-    @GET("air_pollution?")
+    @GET("data/2.5/air_pollution?")
     suspend fun getAirByCoordinate(
         @Query("lat") lat: String,
         @Query("lon") lon: String,
