@@ -1,6 +1,7 @@
 package com.example.data
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -23,6 +24,7 @@ class SettingsRepositoryImpl @Inject constructor(
             get(key = PREF_LANGUAGE, default = "en"),
             get(key = PREF_UNITS, default = "°C")
         ) { language, units ->
+            Log.e("aaaSHAREDPREF","$language +++++ $units" )
             SettingsState(
                 selectedUnits = units,
                 selectedLanguage = language,

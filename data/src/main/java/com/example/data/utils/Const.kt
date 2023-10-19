@@ -1,7 +1,7 @@
 package com.example.data.utils
 
 object Const {
-    const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+    const val BASE_URL = "https://api.openweathermap.org/"
     const val APP_ID = "a7a3f0914c35285059a4430b6410fef6"
     const val APP_ID1 = "6acf351b73521246fd581a8bbb3c0102"
     const val DEFAULT_LON = "139.6917"

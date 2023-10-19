@@ -45,6 +45,8 @@ class WeatherViewModel @Inject constructor(
         _isLoading,
         _emptyCityError
     ) { weather, settings, userMessage, isLoading, emptyCityError ->
+        Log.e("aaa++++", "${weather?.lat} + ${weather?.lon} + $isLoading + $emptyCityError")
+        Log.e("aaa++++", "${settings.selectedLanguage} + ${settings.selectedUnits}")
         weather?.toWeatherState(
             settings,
             userMessage,
@@ -70,6 +72,12 @@ class WeatherViewModel @Inject constructor(
         }
         showMessage(result)
         setLoading(false)
+    }
+
+    init {
+        viewModelScope.launch(exceptionHandler) {
+            weatherRepository.listenWeather()
+        }
     }
 
     fun showMessage(messageRes: Int) {

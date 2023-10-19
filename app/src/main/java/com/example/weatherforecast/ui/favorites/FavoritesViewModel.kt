@@ -67,7 +67,7 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            favoritesRepository.getFavoritesFlow()
+            favoritesRepository.observeFavorites()
         }
     }
 

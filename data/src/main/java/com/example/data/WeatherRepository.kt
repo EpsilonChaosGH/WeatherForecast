@@ -9,6 +9,8 @@ interface WeatherRepository {
 
     fun getWeatherFlow(): Flow<WeatherEntity?>
 
+    suspend fun listenWeather()
+
     suspend fun loadWeatherByCoordinates(coordinates: Coordinates)
 
     suspend fun loadWeatherByCity(city: City)
