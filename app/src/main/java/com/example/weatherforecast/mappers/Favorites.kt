@@ -22,5 +22,6 @@ internal fun FavoritesEntity.toFavoritesItem(
     humidity = "$humidity %",
     pressure = "$pressure hPa",
     windSpeed = "${windSpeed.roundToInt()} m/s",
-    data = data.format(FORMAT_HH_mm, timezone)
+    data = data.format(FORMAT_HH_mm, timezone),
+    coordinates = coordinates
 )

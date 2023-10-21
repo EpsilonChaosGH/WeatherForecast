@@ -1,5 +1,6 @@
 package com.example.data
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.example.data.di.DefaultDispatcher
 import com.example.data.mappers.toAirEntity
@@ -35,15 +36,18 @@ class WeatherRepositoryImpl @Inject constructor(
     private val settingsRepository: SettingsRepository,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) : WeatherRepository {
-    override fun getWeatherFlow(): Flow<WeatherEntity?> {
+
+    @WorkerThread
+    override fun observeWeather(): Flow<WeatherEntity?> {
         return appDatabase.weatherDao().observeWeather().map { weatherDbEntity ->
-            weatherDbEntity?.toWeatherEntity()
+            weatherDbEntity?.toWeatherEntity(settingsRepository.getSettingsFlow().first())
         }
     }
 
     @WorkerThread
     override suspend fun listenWeather() = wrapBackendExceptions {
         settingsRepository.getSettingsFlow().collect { settings ->
+            Log.e("aaa", "LISTEN")
             val weather = appDatabase.weatherDao().observeWeather().first()
             loadWeather(
                 Coordinates(
@@ -72,6 +76,7 @@ class WeatherRepositoryImpl @Inject constructor(
     @WorkerThread
     private suspend fun loadWeather(coordinates: Coordinates, settings: SettingsState) =
         wrapBackendExceptions {
+            Log.e("aaa", "LOAD")
             val weather = currentWeatherService.getCurrentWeatherByCoordinates(
                 lat = coordinates.lat,
                 lon = coordinates.lon,

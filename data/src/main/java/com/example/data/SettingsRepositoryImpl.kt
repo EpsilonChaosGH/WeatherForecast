@@ -22,7 +22,7 @@ class SettingsRepositoryImpl @Inject constructor(
     override fun getSettingsFlow(): Flow<SettingsState> {
         return combine(
             get(key = PREF_LANGUAGE, default = "en"),
-            get(key = PREF_UNITS, default = "°C")
+            get(key = PREF_UNITS, default = "metric")
         ) { language, units ->
             Log.e("aaaSHAREDPREF","$language +++++ $units" )
             SettingsState(
@@ -34,6 +34,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setLanguage(language: String) {
+        Log.e("aaaSHAREDPREF","$language + SET" )
         set(key = PREF_LANGUAGE, value = language)
     }
 
@@ -50,6 +51,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     private fun <T> get(key: Preferences.Key<T>, default: T): Flow<T> {
+        Log.e("aaaSHAREDPREF","GET" )
         return context.dataStore.data.map { settings ->
             settings[key] ?: default
         }

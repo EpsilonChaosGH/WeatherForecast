@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
@@ -55,6 +56,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        Log.e("aaa","WEATHER FRAGMENT")
 
         refreshLayout.setColorSchemeResources(R.color.main_text_color)
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.main_color)

@@ -13,7 +13,6 @@ import com.example.weatherforecast.model.Units
 import kotlin.math.roundToInt
 
 internal fun WeatherEntity.toWeatherState(
-    settingsState: SettingsState,
     userMessage: SideEffect<Int?>,
     isLoading: Boolean,
     emptyCityError: Boolean
