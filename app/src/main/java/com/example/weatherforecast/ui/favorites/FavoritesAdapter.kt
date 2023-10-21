@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entity.City
+import com.example.data.entity.Coordinates
 import com.example.weatherforecast.databinding.ItemFavoriteBinding
 import com.example.weatherforecast.model.FavoritesItem
 
 interface FavoritesListener {
-    fun showDetails(city: City)
+    fun showDetails(coordinates: Coordinates)
 }
 
 class FavoritesDiffCallback(
@@ -46,7 +47,7 @@ class FavoritesAdapter(
             currentWeatherTextView.text = item.description
             weatherIconImageView.setImageResource(item.weatherType.iconResId)
 
-            itemView.setOnClickListener { listener.showDetails(City(item.city)) }
+            itemView.setOnClickListener { listener.showDetails(item.coordinates) }
         }
     }
 

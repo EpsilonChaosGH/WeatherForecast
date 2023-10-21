@@ -8,7 +8,6 @@ import com.example.data.utils.ConnectionException
 import com.example.data.FavoritesRepository
 import com.example.data.utils.InvalidApiKeyException
 import com.example.data.utils.RequestRateLimitException
-import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
 import com.example.data.entity.Coordinates
@@ -31,7 +30,6 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val favoritesRepository: FavoritesRepository,
-    settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
@@ -39,16 +37,13 @@ class WeatherViewModel @Inject constructor(
     private val _emptyCityError = MutableStateFlow(false)
 
     val uiState: StateFlow<WeatherState?> = combine(
-        weatherRepository.getWeatherFlow(),
-        settingsRepository.getSettingsFlow(),
+        weatherRepository.observeWeather(),
         _userMessage,
         _isLoading,
         _emptyCityError
-    ) { weather, settings, userMessage, isLoading, emptyCityError ->
-        Log.e("aaa++++", "${weather?.lat} + ${weather?.lon} + $isLoading + $emptyCityError")
-        Log.e("aaa++++", "${settings.selectedLanguage} + ${settings.selectedUnits}")
+    ) { weather, userMessage, isLoading, emptyCityError ->
+        Log.e("aaaAAAAA", "${weather?.city} + ${weather?.lat} + ${weather?.lon} + $isLoading + $emptyCityError ")
         weather?.toWeatherState(
-            settings,
             userMessage,
             isLoading,
             emptyCityError
@@ -60,8 +55,8 @@ class WeatherViewModel @Inject constructor(
     )
 
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.e("aaa1",exception.message.toString())
-        Log.e("aaa1",exception.toString())
+        Log.e("aaa111",exception.message.toString())
+        Log.e("aaa222",exception.toString())
         val result = when (exception) {
             is ConnectionException -> R.string.error_connection
             is CityNotFoundException -> R.string.error_404_city_not_found
@@ -78,10 +73,6 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch(exceptionHandler) {
             weatherRepository.listenWeather()
         }
-    }
-
-    fun showMessage(messageRes: Int) {
-        _userMessage.value = SideEffect(messageRes)
     }
 
     fun refreshWeather() {
@@ -120,7 +111,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun addOrRemoveFromFavorite() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             uiState.value?.let { value ->
                 if (value.isFavorites) {
                     favoritesRepository.deleteFromFavoritesById(value.id)
@@ -136,6 +127,10 @@ class WeatherViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun showMessage(messageRes: Int) {
+        _userMessage.value = SideEffect(messageRes)
     }
 
     fun setEmptyFieldException(emptyCityError: Boolean) {

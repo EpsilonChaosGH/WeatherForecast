@@ -7,6 +7,7 @@ import com.example.data.FavoritesRepository
 import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.City
+import com.example.data.entity.Coordinates
 import com.example.data.utils.CityNotFoundException
 import com.example.data.utils.ConnectionException
 import com.example.data.utils.InvalidApiKeyException
@@ -41,7 +42,7 @@ class FavoritesViewModel @Inject constructor(
         _userMessage,
         _isLoading
     ) { favorites, settings, userMessage, isLoading ->
-        Log.e("aaa", "fav VM")
+//        Log.e("aaa", "fav VM")
         FavoritesState(
             favorites.map { it.toFavoritesItem(settings) },
             userMessage,
@@ -87,9 +88,9 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun loadWeatherByCity(city: City) {
+    fun loadWeatherByCity(coordinates: Coordinates) {
         viewModelScope.launch(exceptionHandler) {
-            weatherRepository.loadWeatherByCity(city = city)
+            weatherRepository.loadWeatherByCoordinates(coordinates)
         }
     }
 

@@ -5,6 +5,7 @@ import com.example.data.entity.Coordinates
 import com.example.data.entity.FavoritesEntity
 import com.example.data.source.network.response.CurrentWeatherResponse
 import com.example.data.entity.ForecastEntity
+import com.example.data.entity.SettingsState
 import com.example.data.entity.WeatherEntity
 import com.example.data.source.local.entity.AirDbEntity
 import com.example.data.source.local.entity.WeatherDbEntity
@@ -53,7 +54,9 @@ internal fun CurrentWeatherResponse.toFavoritesEntity() = FavoritesEntity(
     )
 )
 
-internal fun WeatherDbEntity.toWeatherEntity() = WeatherEntity(
+internal fun WeatherDbEntity.toWeatherEntity(
+    settingsState: SettingsState
+) = WeatherEntity(
     isFavorites = isFavorites,
     id = id,
     lon = lon,
@@ -70,5 +73,6 @@ internal fun WeatherDbEntity.toWeatherEntity() = WeatherEntity(
     data = data,
     timezone = timezone,
     forecast = forecast,
-    air = air
+    air = air,
+    settingsState = settingsState
 )

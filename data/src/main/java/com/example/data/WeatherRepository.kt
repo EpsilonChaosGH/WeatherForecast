@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
 
-    fun getWeatherFlow(): Flow<WeatherEntity?>
+    fun observeWeather(): Flow<WeatherEntity?>
 
     suspend fun listenWeather()
 

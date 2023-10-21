@@ -1,5 +1,7 @@
 package com.example.weatherforecast.model
 
+import com.example.data.entity.Coordinates
+
 data class FavoritesItem(
     val cityId: Long,
     val city: String,
@@ -12,4 +14,5 @@ data class FavoritesItem(
     val pressure: String,
     val windSpeed: String,
     val data: String,
+    val coordinates: Coordinates
 )

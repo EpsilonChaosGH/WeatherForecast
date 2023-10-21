@@ -19,5 +19,6 @@ data class WeatherEntity(
     val data: Long,
     val timezone: Long,
     val forecast: List<ForecastEntity>,
-    val air: AirDbEntity
+    val air: AirDbEntity,
+    val settingsState: SettingsState
 )
