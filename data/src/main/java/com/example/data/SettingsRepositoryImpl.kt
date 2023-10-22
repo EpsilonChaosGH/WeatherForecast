@@ -1,7 +1,6 @@
 package com.example.data
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -9,22 +8,23 @@ import com.example.data.entity.SettingsState
 import com.example.data.utils.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SettingsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SettingsRepository {
 
     private val PREF_LANGUAGE by lazy { stringPreferencesKey("language") }
     private val PREF_UNITS by lazy { stringPreferencesKey("units") }
+
     override fun getSettingsFlow(): Flow<SettingsState> {
-        return combine(
-            get(key = PREF_LANGUAGE, default = "en"),
-            get(key = PREF_UNITS, default = "metric")
-        ) { language, units ->
-            Log.e("aaaSHAREDPREF","$language +++++ $units" )
+        return get(key = PREF_UNITS, default = "metric").zip(
+            get(key = PREF_LANGUAGE, default = "en")
+        ) { units, language ->
             SettingsState(
                 selectedUnits = units,
                 selectedLanguage = language,
@@ -34,7 +34,6 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setLanguage(language: String) {
-        Log.e("aaaSHAREDPREF","$language + SET" )
         set(key = PREF_LANGUAGE, value = language)
     }
 
@@ -51,7 +50,6 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     private fun <T> get(key: Preferences.Key<T>, default: T): Flow<T> {
-        Log.e("aaaSHAREDPREF","GET" )
         return context.dataStore.data.map { settings ->
             settings[key] ?: default
         }
