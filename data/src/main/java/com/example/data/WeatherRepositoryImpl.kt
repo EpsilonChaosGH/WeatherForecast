@@ -26,7 +26,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WeatherRepositoryImpl @Inject constructor(
     private val geocodingService: GeocodingService,
     private val currentWeatherService: CurrentWeatherService,
@@ -40,6 +42,7 @@ class WeatherRepositoryImpl @Inject constructor(
     @WorkerThread
     override fun observeWeather(): Flow<WeatherEntity?> {
         return appDatabase.weatherDao().observeWeather().map { weatherDbEntity ->
+            Log.e("aaa", "OBS WEATHER")
             weatherDbEntity?.toWeatherEntity(settingsRepository.getSettingsFlow().first())
         }
     }
@@ -48,6 +51,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun listenWeather() = wrapBackendExceptions {
         settingsRepository.getSettingsFlow().collect { settings ->
             Log.e("aaa", "LISTEN")
+            Log.e("aaaSHAREDPREF","${settings.selectedLanguage} LISTEN ${settings.selectedUnits}" )
             val weather = appDatabase.weatherDao().observeWeather().first()
             loadWeather(
                 Coordinates(

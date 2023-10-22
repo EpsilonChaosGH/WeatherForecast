@@ -1,10 +1,8 @@
 package com.example.weatherforecast.ui.settings
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -40,7 +38,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val language = SupportedLanguage.getLanguageValue(pos)
                 if (viewModel.state.value.selectedLanguage != language) {
-                    Log.e("aaaSettingsFrag", language)
                     viewModel.setLanguage(language)
                 }
             }
@@ -52,7 +49,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val units = Units.getUnitsValue(pos)
                 if (viewModel.state.value.selectedUnits != units) {
-                    Log.e("aaaSettingsFragU", units)
                     viewModel.setUnits(units)
                 }
             }
