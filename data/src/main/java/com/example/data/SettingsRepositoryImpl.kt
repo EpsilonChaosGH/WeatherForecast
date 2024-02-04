@@ -1,6 +1,7 @@
 package com.example.data
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -8,6 +9,7 @@ import com.example.data.entity.SettingsState
 import com.example.data.utils.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
@@ -22,9 +24,10 @@ class SettingsRepositoryImpl @Inject constructor(
     private val PREF_UNITS by lazy { stringPreferencesKey("units") }
 
     override fun getSettingsFlow(): Flow<SettingsState> {
-        return get(key = PREF_UNITS, default = "metric").zip(
+        return get(key = PREF_UNITS, default = "metric").combine(
             get(key = PREF_LANGUAGE, default = "en")
         ) { units, language ->
+            Log.e("aaa", "$units + $language")
             SettingsState(
                 selectedUnits = units,
                 selectedLanguage = language,

@@ -35,7 +35,9 @@ internal fun CurrentWeatherResponse.toWeatherDbEntity(
     air = air
 )
 
-internal fun CurrentWeatherResponse.toFavoritesEntity() = FavoritesEntity(
+internal fun CurrentWeatherResponse.toFavoritesEntity(
+    settingsState: SettingsState
+) = FavoritesEntity(
     cityId = id,
     city = name,
     country = sys.country,
@@ -51,7 +53,8 @@ internal fun CurrentWeatherResponse.toFavoritesEntity() = FavoritesEntity(
     coordinates = Coordinates(
         lat = coord.lat.toString(),
         lon = coord.lon.toString()
-    )
+    ),
+    settingsState = settingsState
 )
 
 internal fun WeatherDbEntity.toWeatherEntity(

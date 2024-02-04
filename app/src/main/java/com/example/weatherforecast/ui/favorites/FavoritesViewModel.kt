@@ -7,7 +7,6 @@ import com.example.data.SettingsRepository
 import com.example.data.WeatherRepository
 import com.example.data.entity.Coordinates
 import com.example.data.utils.CityNotFoundException
-import com.example.data.utils.ConnectionException
 import com.example.data.utils.InvalidApiKeyException
 import com.example.data.utils.RequestRateLimitException
 import com.example.weatherforecast.R
@@ -22,13 +21,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
-    private val weatherRepository: WeatherRepository,
-    settingsRepository: SettingsRepository
+    private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
     private val _userMessage = MutableStateFlow<SideEffect<Int?>>(SideEffect(null))
@@ -36,12 +35,11 @@ class FavoritesViewModel @Inject constructor(
 
     val uiState: StateFlow<FavoritesState?> = combine(
         favoritesRepository.favoritesFlow,
-        settingsRepository.getSettingsFlow(),
         _userMessage,
         _isLoading
-    ) { favorites, settings, userMessage, isLoading ->
+    ) { favorites, userMessage, isLoading ->
         FavoritesState(
-            favorites.map { it.toFavoritesItem(settings) },
+            favorites.map { it.toFavoritesItem() },
             userMessage,
             isLoading
         )
@@ -53,7 +51,7 @@ class FavoritesViewModel @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
         val result = when (exception) {
-            is ConnectionException -> R.string.error_connection
+            is IOException -> R.string.error_connection
             is CityNotFoundException -> R.string.error_404_city_not_found
             is InvalidApiKeyException -> R.string.error_401_invalid_api_key
             is RequestRateLimitException -> R.string.error_429_request_rate_limit_surpassing
@@ -64,7 +62,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             favoritesRepository.observeFavorites()
         }
     }
@@ -85,7 +83,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun loadWeatherByCity(coordinates: Coordinates) {
+    fun loadWeatherByCoordinates(coordinates: Coordinates) {
         viewModelScope.launch(exceptionHandler) {
             weatherRepository.loadWeatherByCoordinates(coordinates)
         }

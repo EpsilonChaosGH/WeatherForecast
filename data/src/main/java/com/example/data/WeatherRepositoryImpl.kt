@@ -42,7 +42,6 @@ class WeatherRepositoryImpl @Inject constructor(
     @WorkerThread
     override fun observeWeather(): Flow<WeatherEntity?> {
         return appDatabase.weatherDao().observeWeather().map { weatherDbEntity ->
-            Log.e("aaa", "OBS WEATHER")
             weatherDbEntity?.toWeatherEntity(settingsRepository.getSettingsFlow().first())
         }
     }

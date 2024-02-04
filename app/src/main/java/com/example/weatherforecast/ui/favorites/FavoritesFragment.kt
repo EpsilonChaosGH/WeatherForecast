@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.data.entity.City
 import com.example.data.entity.Coordinates
+import com.example.data.utils.Const
 import com.example.weatherforecast.R
 import com.example.weatherforecast.utils.collectFlow
 import com.example.weatherforecast.databinding.FragmentFavoriteBinding
@@ -28,8 +28,9 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorite) {
     private val adapter = FavoritesAdapter(object : FavoritesListener {
 
         override fun showDetails(coordinates: Coordinates) {
-            viewModel.loadWeatherByCity(coordinates)
+            viewModel.loadWeatherByCoordinates(coordinates)
             showDetails()
+            Const
         }
     })
 
