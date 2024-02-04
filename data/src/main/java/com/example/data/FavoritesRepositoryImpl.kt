@@ -47,7 +47,7 @@ class FavoritesRepositoryImpl @Inject constructor(
                     ).getResult()
                 }
             }.awaitAll().forEach {
-                favoritesList.add(it.toFavoritesEntity())
+                favoritesList.add(it.toFavoritesEntity(settings))
             }
             return@withContext favoritesList
         }

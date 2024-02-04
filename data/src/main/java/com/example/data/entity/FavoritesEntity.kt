@@ -13,5 +13,6 @@ data class FavoritesEntity(
     val windSpeed: Double,
     val data: Long,
     val timezone: Long,
-    val coordinates: Coordinates
+    val coordinates: Coordinates,
+    val settingsState: SettingsState
 )

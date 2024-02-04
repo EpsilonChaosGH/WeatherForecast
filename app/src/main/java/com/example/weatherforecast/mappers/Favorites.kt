@@ -9,9 +9,7 @@ import com.example.weatherforecast.utils.format
 import com.example.weatherforecast.model.Units
 import kotlin.math.roundToInt
 
-internal fun FavoritesEntity.toFavoritesItem(
-    settingsState: SettingsState
-) = FavoritesItem(
+internal fun FavoritesEntity.toFavoritesItem() = FavoritesItem(
     cityId = cityId,
     city = city,
     country = country,
