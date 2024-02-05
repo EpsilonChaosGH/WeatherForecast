@@ -16,7 +16,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -65,6 +64,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         favoriteImageView.setOnClickListener { viewModel.addOrRemoveFromFavorite() }
         searchByCoordinatesImageView.setOnClickListener { getWeatherByCoordinates() }
 
+        setUpSettingsDialogFragmentListener()
         observeEditorActionListener()
         observeWeatherState()
     }
@@ -177,36 +177,28 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             viewModel.showMessage(R.string.permission_grated)
         } else {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                askUserForOpeningAppSettings()
+                showSettingsDialogFragment()
             } else {
                 viewModel.showMessage(R.string.permissions_denied)
             }
         }
     }
 
-    private fun askUserForOpeningAppSettings() {
-        val appSettingsIntent = Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.fromParts("package", requireActivity().packageName, null)
-        )
-        if (requireActivity().packageManager.resolveActivity(
-                appSettingsIntent,
-                PackageManager.MATCH_DEFAULT_ONLY
-            ) == null
-        ) {
-            viewModel.showMessage(R.string.permissions_denied_forever)
-        } else {
+    private fun showSettingsDialogFragment() {
+        OpenAppSettingDialogFragment.show(parentFragmentManager)
+    }
 
-            val listener = DialogInterface.OnClickListener { _, _ -> }
-            val listenerSettings = DialogInterface.OnClickListener { _, _ ->
-                startActivity(appSettingsIntent)
+    private fun setUpSettingsDialogFragmentListener(){
+        OpenAppSettingDialogFragment.setupListener(parentFragmentManager, this) {
+            when(it) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val appSettingsIntent = Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", requireActivity().packageName, null)
+                    )
+                    startActivity(appSettingsIntent)
+                }
             }
-            val builder = AlertDialog.Builder(requireContext())
-                .setPositiveButton(R.string.button_open_settings, listenerSettings)
-                .setNeutralButton(R.string.button_cancel, listener)
-                .create()
-            builder.setView(layoutInflater.inflate(R.layout.dialog_gps_settings, null))
-            builder.show()
         }
     }
 }
