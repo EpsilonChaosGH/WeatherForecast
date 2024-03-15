@@ -12,6 +12,6 @@ interface AirService {
     suspend fun getAirByCoordinate(
         @Query("lat") lat: String,
         @Query("lon") lon: String,
-        @Query("appid") appId: String = Const.APP_ID,
+//        @Query("appid") appId: String = Const.APP_ID,
     ): Response<AirResponse>
 }

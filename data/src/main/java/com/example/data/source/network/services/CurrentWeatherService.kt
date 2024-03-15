@@ -20,7 +20,7 @@ interface CurrentWeatherService {
     suspend fun getCurrentWeatherByCoordinates(
         @Query("lat") lat: String,
         @Query("lon") lon: String,
-        @Query("appid") appId: String = Const.APP_ID,
+//        @Query("appid") appId: String = Const.APP_ID,
         @Query("lang") language: String = Const.LANG_EN,
         @Query("units") units: String = Const.UNITS_METRIC
     ): Response<CurrentWeatherResponse>

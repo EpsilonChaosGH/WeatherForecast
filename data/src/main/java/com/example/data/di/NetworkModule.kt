@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -17,14 +18,25 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val request = chain.request()
+            val url = request.url.newBuilder().addQueryParameter("appid", Const.APP_ID).build()
+            chain.proceed(request.newBuilder().url(url).build())
+        }
+    }
+
+    @Provides
+    @Singleton
     fun provideMoshi(): Moshi {
         return Moshi.Builder().build()
     }
 
     @Provides
     @Singleton
-    fun provideClient(): OkHttpClient {
+    fun provideClient(interceptor: Interceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .build()
     }
 

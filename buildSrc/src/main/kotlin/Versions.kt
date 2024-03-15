@@ -9,6 +9,8 @@ object Versions {
 
     // retrofit2
     const val retrofit2 = "2.9.0"
+    
+    const val loggingInterceptor = "4.11.0"
 
     // room
     const val room = "2.5.1"
