@@ -56,6 +56,7 @@ dependencies {
     dep.retrofit.apply { // https://square.github.io/retrofit/
         implementation(converterMoshi)
         implementation(retrofit2)
+        implementation(loggingInterceptor)
     }
 
     dep.room.apply { // https://developer.android.com/jetpack/androidx/releases/room

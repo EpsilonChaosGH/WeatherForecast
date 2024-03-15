@@ -11,6 +11,6 @@ interface GeocodingService {
     @GET("geo/1.0/direct?")
     suspend fun getCoordinatesByCity(
         @Query("q") city: String,
-        @Query("appid") appId: String = Const.APP_ID
+//        @Query("appid") appId: String = Const.APP_ID
     ): Response<List<GeocodingResponse>>
 }

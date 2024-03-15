@@ -16,4 +16,7 @@ object Retrofit {
      * A type-safe HTTP client for Android and Java.
      */
     const val retrofit2 = "com.squareup.retrofit2:retrofit:${Versions.retrofit2}"
+
+
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.loggingInterceptor}"
 }
